@@ -3,20 +3,28 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Fertility Companion API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: logs
+    description: Daily fertility log entries
+  - name: cycles
+    description: Cycle management
+  - name: insights
+    description: AI-powered fertility insights
+  - name: dashboard
+    description: Dashboard summaries and readiness scores
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +32,239 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /logs:
+    get:
+      operationId: getLogs
+      tags: [logs]
+      summary: Get all daily logs
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 30
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: List of daily logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DailyLog"
+    post:
+      operationId: createLog
+      tags: [logs]
+      summary: Create a new daily log entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDailyLogBody"
+      responses:
+        "201":
+          description: Created log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyLog"
+
+  /logs/{id}:
+    get:
+      operationId: getLog
+      tags: [logs]
+      summary: Get a single log entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Daily log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyLog"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateLog
+      tags: [logs]
+      summary: Update a daily log entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDailyLogBody"
+      responses:
+        "200":
+          description: Updated log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyLog"
+    delete:
+      operationId: deleteLog
+      tags: [logs]
+      summary: Delete a daily log entry
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /logs/today:
+    get:
+      operationId: getTodayLog
+      tags: [logs]
+      summary: Get today's log entry if it exists
+      responses:
+        "200":
+          description: Today's log or null
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyLog"
+        "404":
+          description: No log for today
+
+  /cycles:
+    get:
+      operationId: getCycles
+      tags: [cycles]
+      summary: Get all cycles
+      responses:
+        "200":
+          description: List of cycles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cycle"
+    post:
+      operationId: createCycle
+      tags: [cycles]
+      summary: Start a new cycle (period start)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCycleBody"
+      responses:
+        "201":
+          description: Created cycle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cycle"
+
+  /cycles/current:
+    get:
+      operationId: getCurrentCycle
+      tags: [cycles]
+      summary: Get the current active cycle with phase info
+      responses:
+        "200":
+          description: Current cycle with phase
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrentCycle"
+        "404":
+          description: No active cycle
+
+  /insights/generate:
+    post:
+      operationId: generateInsight
+      tags: [insights]
+      summary: Generate AI insight based on today's log and cycle context
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateInsightBody"
+      responses:
+        "200":
+          description: AI-generated insight
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InsightResponse"
+
+  /insights:
+    get:
+      operationId: getInsights
+      tags: [insights]
+      summary: Get recent AI insights
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        "200":
+          description: List of recent insights
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SavedInsight"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [dashboard]
+      summary: Get dashboard overview — current phase, readiness score, recent signals
+      responses:
+        "200":
+          description: Dashboard summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /dashboard/readiness-score:
+    get:
+      operationId: getReadinessScore
+      tags: [dashboard]
+      summary: Get today's fertility readiness/energy score
+      responses:
+        "200":
+          description: Readiness score breakdown
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadinessScore"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +275,316 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    DailyLog:
+      type: object
+      properties:
+        id:
+          type: integer
+        date:
+          type: string
+          format: date
+        bbt:
+          type: number
+          nullable: true
+          description: Basal body temperature in Celsius
+        cervicalMucus:
+          type: string
+          nullable: true
+          enum: [dry, sticky, creamy, watery, egg_white, null]
+        mood:
+          type: string
+          nullable: true
+          enum: [great, good, neutral, low, anxious, null]
+        energyLevel:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 10
+        sleepHours:
+          type: number
+          nullable: true
+        stressLevel:
+          type: integer
+          nullable: true
+          minimum: 1
+          maximum: 10
+        symptoms:
+          type: array
+          items:
+            type: string
+          description: List of symptoms (cramps, bloating, spotting, tender_breasts, etc.)
+        supplements:
+          type: array
+          items:
+            type: string
+        notes:
+          type: string
+          nullable: true
+        cycleDay:
+          type: integer
+          nullable: true
+        phase:
+          type: string
+          nullable: true
+          enum: [menstrual, follicular, ovulation, luteal, tww, null]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - date
+        - symptoms
+        - supplements
+        - createdAt
+        - updatedAt
+
+    CreateDailyLogBody:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        bbt:
+          type: number
+          nullable: true
+        cervicalMucus:
+          type: string
+          nullable: true
+        mood:
+          type: string
+          nullable: true
+        energyLevel:
+          type: integer
+          nullable: true
+        sleepHours:
+          type: number
+          nullable: true
+        stressLevel:
+          type: integer
+          nullable: true
+        symptoms:
+          type: array
+          items:
+            type: string
+        supplements:
+          type: array
+          items:
+            type: string
+        notes:
+          type: string
+          nullable: true
+      required:
+        - date
+        - symptoms
+        - supplements
+
+    Cycle:
+      type: object
+      properties:
+        id:
+          type: integer
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          nullable: true
+          format: date
+        cycleLength:
+          type: integer
+          nullable: true
+        ovulationDay:
+          type: integer
+          nullable: true
+          description: Estimated cycle day of ovulation
+        notes:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - startDate
+        - createdAt
+
+    CreateCycleBody:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date
+        notes:
+          type: string
+          nullable: true
+      required:
+        - startDate
+
+    CurrentCycle:
+      type: object
+      properties:
+        cycle:
+          $ref: "#/components/schemas/Cycle"
+        cycleDay:
+          type: integer
+        phase:
+          type: string
+          enum: [menstrual, follicular, ovulation, luteal, tww]
+        phaseDescription:
+          type: string
+        daysUntilNextPhase:
+          type: integer
+          nullable: true
+        estimatedOvulationDate:
+          type: string
+          nullable: true
+          format: date
+        isInTww:
+          type: boolean
+      required:
+        - cycle
+        - cycleDay
+        - phase
+        - phaseDescription
+        - isInTww
+
+    GenerateInsightBody:
+      type: object
+      properties:
+        logId:
+          type: integer
+          nullable: true
+        context:
+          type: string
+          description: Optional additional user context for the insight
+        insightType:
+          type: string
+          enum: [daily, tww_support, body_signal, energy, boundary]
+      required:
+        - insightType
+
+    InsightResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        insight:
+          type: string
+        insightType:
+          type: string
+        recommendation:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - insight
+        - insightType
+        - createdAt
+
+    SavedInsight:
+      type: object
+      properties:
+        id:
+          type: integer
+        insight:
+          type: string
+        insightType:
+          type: string
+        recommendation:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - insight
+        - insightType
+        - createdAt
+
+    DashboardSummary:
+      type: object
+      properties:
+        currentPhase:
+          type: string
+          nullable: true
+        cycleDay:
+          type: integer
+          nullable: true
+        readinessScore:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 100
+        isInTww:
+          type: boolean
+        recentSymptoms:
+          type: array
+          items:
+            type: string
+        lastLogDate:
+          type: string
+          nullable: true
+          format: date
+        totalCycles:
+          type: integer
+        avgCycleLength:
+          type: number
+          nullable: true
+        latestInsight:
+          type: string
+          nullable: true
+        streakDays:
+          type: integer
+          description: Consecutive days logged
+      required:
+        - isInTww
+        - recentSymptoms
+        - totalCycles
+        - streakDays
+
+    ReadinessScore:
+      type: object
+      properties:
+        overall:
+          type: integer
+          minimum: 0
+          maximum: 100
+        sleepScore:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 100
+        stressScore:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 100
+        energyScore:
+          type: integer
+          nullable: true
+          minimum: 0
+          maximum: 100
+        date:
+          type: string
+          format: date
+        message:
+          type: string
+      required:
+        - overall
+        - date
+        - message
