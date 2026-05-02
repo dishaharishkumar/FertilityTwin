@@ -6,8 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from "./chatMessage";
+export * from "./chatMessageRole";
+export * from "./chatResponse";
 export * from "./createCycleBody";
 export * from "./createDailyLogBody";
+export * from "./createJournalBody";
 export * from "./currentCycle";
 export * from "./currentCyclePhase";
 export * from "./cycle";
@@ -19,9 +23,12 @@ export * from "./dashboardSummary";
 export * from "./errorResponse";
 export * from "./generateInsightBody";
 export * from "./generateInsightBodyInsightType";
+export * from "./getChatHistoryParams";
 export * from "./getInsightsParams";
 export * from "./getLogsParams";
 export * from "./healthStatus";
 export * from "./insightResponse";
+export * from "./journalEntry";
 export * from "./readinessScore";
 export * from "./savedInsight";
+export * from "./sendChatBody";

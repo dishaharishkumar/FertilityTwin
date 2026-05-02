@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, BookOpen, RefreshCw, Sparkles, Menu, X } from "lucide-react";
+import { LayoutDashboard, BookOpen, RefreshCw, Sparkles, Menu, X, MessageCircle, BookHeart } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -8,6 +8,8 @@ const navItems = [
   { path: "/log", label: "Daily Log", icon: BookOpen },
   { path: "/cycle", label: "Cycle", icon: RefreshCw },
   { path: "/insights", label: "Insights", icon: Sparkles },
+  { path: "/chat", label: "Companion", icon: MessageCircle },
+  { path: "/journal", label: "Journal", icon: BookHeart },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {

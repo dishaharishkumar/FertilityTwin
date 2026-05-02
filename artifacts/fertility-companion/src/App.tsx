@@ -9,6 +9,8 @@ import DailyLogPage from "@/pages/log";
 import CycleTracker from "@/pages/cycle";
 import Insights from "@/pages/insights";
 import GenerateInsight from "@/pages/generate-insight";
+import ChatPage from "@/pages/chat";
+import JournalPage from "@/pages/journal";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +30,8 @@ function Router() {
         <Route path="/cycle" component={CycleTracker} />
         <Route path="/insights" component={Insights} />
         <Route path="/insights/generate" component={GenerateInsight} />
+        <Route path="/chat" component={ChatPage} />
+        <Route path="/journal" component={JournalPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

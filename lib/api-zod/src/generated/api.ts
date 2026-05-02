@@ -461,3 +461,69 @@ export const GetReadinessScoreResponse = zod.object({
   date: zod.coerce.date(),
   message: zod.string(),
 });
+
+/**
+ * @summary Get recent chat messages
+ */
+export const getChatHistoryQueryLimitDefault = 50;
+
+export const GetChatHistoryQueryParams = zod.object({
+  limit: zod.coerce.number().default(getChatHistoryQueryLimitDefault),
+});
+
+export const GetChatHistoryResponseItem = zod.object({
+  id: zod.number(),
+  role: zod.enum(["user", "assistant"]),
+  content: zod.string(),
+  createdAt: zod.coerce.date(),
+});
+export const GetChatHistoryResponse = zod.array(GetChatHistoryResponseItem);
+
+/**
+ * @summary Send a message to the AI companion and get a response
+ */
+export const SendChatMessageBody = zod.object({
+  message: zod.string(),
+});
+
+export const SendChatMessageResponse = zod.object({
+  userMessage: zod.object({
+    id: zod.number(),
+    role: zod.enum(["user", "assistant"]),
+    content: zod.string(),
+    createdAt: zod.coerce.date(),
+  }),
+  assistantMessage: zod.object({
+    id: zod.number(),
+    role: zod.enum(["user", "assistant"]),
+    content: zod.string(),
+    createdAt: zod.coerce.date(),
+  }),
+});
+
+/**
+ * @summary Get all journal entries
+ */
+export const GetJournalEntriesResponseItem = zod.object({
+  id: zod.number(),
+  content: zod.string(),
+  aiResponse: zod.string().nullish(),
+  createdAt: zod.coerce.date(),
+});
+export const GetJournalEntriesResponse = zod.array(
+  GetJournalEntriesResponseItem,
+);
+
+/**
+ * @summary Create a new journal entry with optional AI reflection
+ */
+export const CreateJournalEntryBody = zod.object({
+  content: zod.string(),
+});
+
+/**
+ * @summary Delete a journal entry
+ */
+export const DeleteJournalEntryParams = zod.object({
+  id: zod.coerce.number(),
+});

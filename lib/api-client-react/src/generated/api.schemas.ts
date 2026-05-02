@@ -204,11 +204,50 @@ export interface ReadinessScore {
   message: string;
 }
 
+export type ChatMessageRole =
+  (typeof ChatMessageRole)[keyof typeof ChatMessageRole];
+
+export const ChatMessageRole = {
+  user: "user",
+  assistant: "assistant",
+} as const;
+
+export interface ChatMessage {
+  id: number;
+  role: ChatMessageRole;
+  content: string;
+  createdAt: string;
+}
+
+export interface SendChatBody {
+  message: string;
+}
+
+export interface ChatResponse {
+  userMessage: ChatMessage;
+  assistantMessage: ChatMessage;
+}
+
+export interface JournalEntry {
+  id: number;
+  content: string;
+  aiResponse?: string | null;
+  createdAt: string;
+}
+
+export interface CreateJournalBody {
+  content: string;
+}
+
 export type GetLogsParams = {
   limit?: number;
   offset?: number;
 };
 
 export type GetInsightsParams = {
+  limit?: number;
+};
+
+export type GetChatHistoryParams = {
   limit?: number;
 };
