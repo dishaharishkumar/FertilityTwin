@@ -1,23 +1,21 @@
 import { useState, useRef, useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  useGetChatHistory,
-  getGetChatHistoryQueryKey,
+  useGetChatHistory, getGetChatHistoryQueryKey,
   useSendChatMessage,
 } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Send, Sparkles } from "lucide-react";
-import { format, parseISO } from "date-fns";
+import { Send, Sparkles, Heart, HelpCircle, Wind } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const STARTERS = [
-  "What is happening in my body right now?",
-  "I've been Googling my symptoms and I'm spiraling.",
-  "I just feel so alone in this journey.",
-  "Can you help me understand my TWW symptoms?",
-  "I need something to calm me down.",
+  { text: "What is happening in my body right now?", icon: HelpCircle },
+  { text: "I've been Googling my symptoms and I'm spiraling.", icon: Wind },
+  { text: "I just feel so alone in this journey.", icon: Heart },
+  { text: "Can you help me understand my TWW symptoms?", icon: Sparkles },
+  { text: "I need something to calm me down.", icon: Wind },
 ];
 
 export default function ChatPage() {
@@ -80,42 +78,70 @@ export default function ChatPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-80px)] md:h-[calc(100vh-40px)] animate-in fade-in duration-300">
       {/* Header */}
-      <div className="shrink-0 pb-4 border-b border-border">
-        <div className="flex items-center gap-2">
-          <Sparkles size={18} className="text-primary" />
-          <h1 className="text-2xl font-serif text-foreground">Bloom Companion</h1>
+      <div className="shrink-0 pb-5 border-b border-border">
+        <div className="flex items-center gap-2.5">
+          <div
+            className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
+            style={{ background: "linear-gradient(135deg, hsl(345,48%,88%) 0%, hsl(345,48%,80%) 100%)" }}
+          >
+            <Sparkles size={15} className="text-primary" />
+          </div>
+          <h1
+            className="text-[1.6rem] text-foreground leading-tight"
+            style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
+          >
+            Bloom Companion
+          </h1>
         </div>
-        <p className="text-sm text-muted-foreground mt-1">
+        <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
           Your private space to ask anything about your body, symptoms, or feelings.
         </p>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto py-4 space-y-4 min-h-0">
+      <div className="flex-1 overflow-y-auto py-5 space-y-4 min-h-0">
         {isLoading ? (
           <div className="space-y-3">
             {[1, 2, 3].map((i) => <Skeleton key={i} className="h-12 w-3/4" />)}
           </div>
         ) : allMessages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              <Sparkles size={22} className="text-primary" />
+            <div
+              className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
+              style={{
+                background: "linear-gradient(135deg, hsl(345,48%,92%) 0%, hsl(345,48%,84%) 100%)",
+                boxShadow: "var(--shadow)",
+              }}
+            >
+              <Sparkles size={26} className="text-primary" />
             </div>
-            <p className="text-base font-medium text-foreground mb-1">I am here with you</p>
-            <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-              Ask me anything — what your symptoms mean, how to calm your anxiety, or just talk about how you are feeling.
+            <p
+              className="text-lg text-foreground mb-1"
+              style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
+            >
+              I am here with you
+            </p>
+            <p className="text-sm text-muted-foreground mb-7 max-w-xs leading-relaxed">
+              Ask me anything — what your symptoms mean, how to calm your mind, or just talk.
             </p>
             <div className="flex flex-col gap-2 w-full max-w-sm">
-              {STARTERS.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => handleSend(s)}
-                  data-testid={`starter-${s.slice(0, 20)}`}
-                  className="text-left text-sm px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted/50 hover:border-primary/30 transition-all text-foreground/80"
-                >
-                  {s}
-                </button>
-              ))}
+              {STARTERS.map((s) => {
+                const Icon = s.icon;
+                return (
+                  <button
+                    key={s.text}
+                    onClick={() => handleSend(s.text)}
+                    data-testid={`starter-${s.text.slice(0, 20)}`}
+                    className="w-full text-left flex items-center gap-3 px-4 py-3 rounded-2xl border border-border bg-card hover:border-primary/30 hover:bg-primary/5 transition-all group"
+                    style={{ boxShadow: "var(--shadow-sm)" }}
+                  >
+                    <span className="shrink-0 w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/18 transition-colors">
+                      <Icon size={13} className="text-primary" />
+                    </span>
+                    <span className="text-sm text-foreground/80 font-medium">{s.text}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
         ) : (
@@ -124,18 +150,20 @@ export default function ChatPage() {
               <div
                 key={msg.id}
                 data-testid={`message-${msg.role}`}
-                className={cn(
-                  "flex",
-                  msg.role === "user" ? "justify-end" : "justify-start"
-                )}
+                className={cn("flex", msg.role === "user" ? "justify-end" : "justify-start")}
               >
                 <div
                   className={cn(
                     "max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed",
                     msg.role === "user"
-                      ? "bg-primary text-primary-foreground rounded-br-sm"
+                      ? "text-white rounded-br-sm"
                       : "bg-card border border-border text-foreground rounded-bl-sm"
                   )}
+                  style={
+                    msg.role === "user"
+                      ? { background: "linear-gradient(135deg, hsl(345,48%,58%) 0%, hsl(345,48%,50%) 100%)" }
+                      : { boxShadow: "var(--shadow-sm)" }
+                  }
                 >
                   {msg.content}
                 </div>
@@ -143,11 +171,14 @@ export default function ChatPage() {
             ))}
             {sendMessage.isPending && (
               <div className="flex justify-start">
-                <div className="bg-card border border-border rounded-2xl rounded-bl-sm px-4 py-3">
+                <div
+                  className="bg-card border border-border rounded-2xl rounded-bl-sm px-4 py-3"
+                  style={{ boxShadow: "var(--shadow-sm)" }}
+                >
                   <div className="flex gap-1 items-center h-4">
-                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:0ms]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:150ms]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground animate-bounce [animation-delay:300ms]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:0ms]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:150ms]" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/60 animate-bounce [animation-delay:300ms]" />
                   </div>
                 </div>
               </div>
@@ -166,7 +197,7 @@ export default function ChatPage() {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Ask me anything... (Enter to send)"
-            className="resize-none min-h-[44px] max-h-[120px]"
+            className="resize-none min-h-[44px] max-h-[120px] rounded-xl"
             rows={1}
             disabled={sendMessage.isPending}
           />
@@ -175,12 +206,12 @@ export default function ChatPage() {
             onClick={() => handleSend()}
             disabled={!input.trim() || sendMessage.isPending}
             size="icon"
-            className="shrink-0 h-11 w-11"
+            className="shrink-0 h-11 w-11 rounded-xl"
           >
-            <Send size={16} />
+            <Send size={15} />
           </Button>
         </div>
-        <p className="text-[11px] text-muted-foreground mt-2 text-center">
+        <p className="text-[11px] text-muted-foreground/70 mt-2 text-center">
           Bloom is not a medical provider. Always consult your doctor for medical concerns.
         </p>
       </div>

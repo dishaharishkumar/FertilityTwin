@@ -19,20 +19,28 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background">
       {/* Mobile top bar */}
-      <div className="md:hidden flex items-center justify-between px-5 py-4 border-b border-border bg-card">
-        <span className="font-serif text-xl text-foreground tracking-tight">Bloom</span>
+      <div
+        className="md:hidden flex items-center justify-between px-5 py-4 bg-card border-b border-border"
+        style={{ boxShadow: "var(--shadow-xs)" }}
+      >
+        <span
+          className="text-xl text-foreground tracking-tight"
+          style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
+        >
+          Bloom
+        </span>
         <button
           data-testid="button-mobile-menu"
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="text-muted-foreground hover:text-foreground transition-colors"
+          className="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-lg hover:bg-muted"
         >
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </div>
 
       {/* Mobile nav drawer */}
       {mobileOpen && (
-        <div className="md:hidden border-b border-border bg-card px-4 pb-4">
+        <div className="md:hidden border-b border-border bg-card px-4 pb-5 pt-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = location === item.path;
@@ -43,13 +51,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 data-testid={`nav-mobile-${item.label.toLowerCase()}`}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors mt-1",
-                  active
-                    ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all mt-1",
+                  active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
                 )}
               >
-                <Icon size={18} />
+                <Icon size={17} strokeWidth={active ? 2.5 : 2} />
                 {item.label}
               </Link>
             );
@@ -58,12 +64,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex flex-col w-60 min-h-screen border-r border-border bg-card px-4 py-8">
-        <div className="mb-8 px-3">
-          <span className="font-serif text-2xl text-foreground tracking-tight">Bloom</span>
-          <p className="text-xs text-muted-foreground mt-0.5">Your fertility companion</p>
+      <aside
+        className="hidden md:flex flex-col w-64 min-h-screen border-r border-border bg-card px-5 py-8"
+        style={{ boxShadow: "var(--shadow-xs)" }}
+      >
+        {/* Brand */}
+        <div className="mb-10 px-2">
+          <span
+            className="text-[2rem] text-foreground leading-none tracking-tight"
+            style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
+          >
+            Bloom
+          </span>
+          <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">Your fertility companion</p>
         </div>
-        <nav className="flex flex-col gap-1">
+
+        {/* Nav */}
+        <nav className="flex flex-col gap-0.5">
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = location === item.path;
@@ -73,28 +90,36 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 href={item.path}
                 data-testid={`nav-${item.label.toLowerCase()}`}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all",
+                  "relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all",
                   active
-                    ? "bg-primary/12 text-primary shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
+                    ? "bg-primary/10 text-primary font-semibold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50 font-medium"
                 )}
               >
-                <Icon size={17} className={active ? "text-primary" : ""} />
+                {active && (
+                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-primary" />
+                )}
+                <Icon size={16} strokeWidth={active ? 2.5 : 1.75} />
                 {item.label}
               </Link>
             );
           })}
         </nav>
-        <div className="mt-auto px-3">
-          <p className="text-xs text-muted-foreground leading-relaxed">
-            You are doing beautifully. Every day of care matters.
+
+        {/* Footer */}
+        <div className="mt-auto px-2 pt-6 border-t border-border/60">
+          <p
+            className="text-[13px] text-muted-foreground leading-relaxed italic"
+            style={{ fontFamily: "var(--app-font-serif)" }}
+          >
+            Every day of care is a gift to your future self.
           </p>
         </div>
       </aside>
 
       {/* Main content */}
       <main className="flex-1 overflow-y-auto">
-        <div className="max-w-3xl mx-auto px-5 py-8 md:px-8">
+        <div className="max-w-2xl mx-auto px-5 py-8 md:px-10 md:py-10">
           {children}
         </div>
       </main>

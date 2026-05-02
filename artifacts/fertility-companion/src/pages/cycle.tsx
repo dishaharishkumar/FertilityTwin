@@ -4,14 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 import {
-  useGetCycles,
-  getGetCyclesQueryKey,
+  useGetCycles, getGetCyclesQueryKey,
   useCreateCycle,
-  useGetCurrentCycle,
-  getGetCurrentCycleQueryKey,
+  useGetCurrentCycle, getGetCurrentCycleQueryKey,
   getGetDashboardSummaryQueryKey,
 } from "@workspace/api-client-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -19,17 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { format, parseISO, differenceInDays } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { Plus, CalendarDays, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-const phaseColors: Record<string, string> = {
-  menstrual: "bg-red-100 text-red-700",
-  follicular: "bg-amber-100 text-amber-700",
-  ovulation: "bg-primary/15 text-primary",
-  luteal: "bg-purple-100 text-purple-700",
-  tww: "bg-rose-100 text-rose-700",
-};
 
 const phaseLabels: Record<string, string> = {
   menstrual: "Menstrual",
@@ -39,31 +28,59 @@ const phaseLabels: Record<string, string> = {
   tww: "Two-Week Wait",
 };
 
+const phaseBadge: Record<string, string> = {
+  menstrual: "bg-red-100 text-red-700 border-red-200",
+  follicular: "bg-amber-100 text-amber-700 border-amber-200",
+  ovulation: "bg-pink-100 text-pink-700 border-pink-200",
+  luteal: "bg-purple-100 text-purple-700 border-purple-200",
+  tww: "bg-rose-100 text-rose-700 border-rose-200",
+};
+
 function PhaseTimeline({ phase, cycleDay }: { phase: string; cycleDay: number }) {
-  const phases = [
-    { key: "menstrual", label: "Menstrual", days: "1-5" },
-    { key: "follicular", label: "Follicular", days: "6-13" },
-    { key: "ovulation", label: "Ovulation", days: "14-16" },
-    { key: "tww", label: "TWW", days: "17-28" },
+  const totalDays = 28;
+  const progressPct = Math.min(Math.max((cycleDay / totalDays) * 100, 2), 98);
+
+  const segments = [
+    { key: "menstrual", label: "Menstrual", flex: 18 },
+    { key: "follicular", label: "Follicular", flex: 29 },
+    { key: "ovulation", label: "Ovulation", flex: 11 },
+    { key: "tww", label: "TWW", flex: 42 },
   ];
 
   return (
-    <div className="space-y-2" data-testid="phase-timeline">
-      <div className="flex rounded-xl overflow-hidden h-3">
-        {phases.map((p) => (
-          <div
-            key={p.key}
-            className={cn(
-              "flex-1 transition-all",
-              p.key === phase ? "opacity-100" : "opacity-30",
-              phaseColors[p.key]?.split(" ")[0] ?? "bg-muted"
-            )}
-          />
-        ))}
+    <div className="space-y-3" data-testid="phase-timeline">
+      <div className="relative h-4">
+        <div
+          className="absolute inset-0 rounded-full overflow-hidden"
+          style={{
+            background: "linear-gradient(to right, #fca5a5 0%, #fcd34d 18%, #f9a8d4 46%, #c4b5fd 57%, #f9a8d4 100%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{
+            background: "linear-gradient(to right, transparent 0%, transparent calc(var(--p) - 0.5%), rgba(255,255,255,0.25) calc(var(--p) - 0.5%), rgba(255,255,255,0.25) 100%)",
+            // @ts-expect-error css var
+            "--p": `${progressPct}%`,
+          }}
+        />
+        <div
+          className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-5 h-5 rounded-full bg-white border-2 border-white"
+          style={{
+            left: `${progressPct}%`,
+            boxShadow: "0 0 0 3px rgba(180,60,100,0.25), 0 2px 6px rgba(0,0,0,0.15)",
+          }}
+        />
       </div>
-      <div className="flex text-[10px] text-muted-foreground">
-        {phases.map((p) => (
-          <div key={p.key} className="flex-1 text-center">{p.label}</div>
+      <div className="flex text-[10px] font-medium text-muted-foreground">
+        {segments.map((s) => (
+          <div
+            key={s.key}
+            className={cn("text-center", s.key === phase ? "text-foreground font-semibold" : "")}
+            style={{ flex: s.flex }}
+          >
+            {s.label}
+          </div>
         ))}
       </div>
     </div>
@@ -112,19 +129,24 @@ export default function CycleTracker() {
     <div className="space-y-6 animate-in fade-in duration-300">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-serif text-foreground">Cycle Tracker</h1>
-          <p className="text-sm text-muted-foreground mt-1">Track your cycles and understand your rhythm</p>
+          <h1
+            className="text-[1.85rem] text-foreground leading-tight"
+            style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
+          >
+            Cycle Tracker
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">Understand your rhythm, month by month</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button size="sm" className="gap-1.5" data-testid="button-start-cycle">
+            <Button size="sm" className="gap-1.5 rounded-xl" data-testid="button-start-cycle">
               <Plus size={15} />
               New Cycle
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle className="font-serif">Start New Cycle</DialogTitle>
+              <DialogTitle style={{ fontFamily: "var(--app-font-serif)" }}>Start New Cycle</DialogTitle>
             </DialogHeader>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -141,7 +163,7 @@ export default function CycleTracker() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={createCycle.isPending} data-testid="button-confirm-cycle">
+                <Button type="submit" className="w-full rounded-xl" disabled={createCycle.isPending} data-testid="button-confirm-cycle">
                   {createCycle.isPending ? "Saving..." : "Start Cycle"}
                 </Button>
               </form>
@@ -152,41 +174,59 @@ export default function CycleTracker() {
 
       {/* Current cycle */}
       {currentLoading ? (
-        <Skeleton className="h-48 w-full rounded-2xl" />
+        <Skeleton className="h-52 w-full rounded-3xl" />
       ) : currentCycle ? (
-        <Card className="border-primary/20 bg-primary/5" data-testid="current-cycle-card">
-          <CardHeader>
-            <CardTitle className="text-base font-semibold text-foreground">Current Cycle</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-primary" data-testid="text-cycle-day">{currentCycle.cycleDay}</div>
-                <div className="text-xs text-muted-foreground">Day</div>
+        <div
+          className="rounded-3xl border border-primary/20 bg-card overflow-hidden"
+          data-testid="current-cycle-card"
+          style={{ boxShadow: "var(--shadow)" }}
+        >
+          {/* Top section with cycle day */}
+          <div
+            className="px-7 py-6"
+            style={{ background: "linear-gradient(135deg, #fff0f5 0%, #fce7f3 100%)" }}
+          >
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="label-caps">Current cycle</p>
+                <div className="flex items-baseline gap-2 mt-2">
+                  <span
+                    data-testid="text-cycle-day"
+                    className="text-6xl font-bold leading-none text-foreground/90"
+                    style={{ fontFamily: "var(--app-font-serif)" }}
+                  >
+                    {currentCycle.cycleDay}
+                  </span>
+                  <span className="text-base text-muted-foreground font-medium">day</span>
+                </div>
               </div>
-              <div className="flex-1 space-y-1">
-                <Badge className={cn("text-xs", phaseColors[currentCycle.phase] ?? "")} data-testid="current-phase-badge">
-                  {phaseLabels[currentCycle.phase] ?? currentCycle.phase}
-                </Badge>
-                <p className="text-xs text-muted-foreground leading-relaxed">{currentCycle.phaseDescription}</p>
-              </div>
+              <Badge
+                className={cn("text-xs font-semibold mt-1 border", phaseBadge[currentCycle.phase] ?? "")}
+                data-testid="current-phase-badge"
+              >
+                {phaseLabels[currentCycle.phase] ?? currentCycle.phase}
+              </Badge>
             </div>
+            <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{currentCycle.phaseDescription}</p>
+          </div>
 
+          {/* Bottom section */}
+          <div className="px-7 py-5 space-y-4">
             <PhaseTimeline phase={currentCycle.phase} cycleDay={currentCycle.cycleDay} />
 
-            <div className="grid grid-cols-2 gap-3 pt-1">
+            <div className="grid grid-cols-2 gap-3">
               {currentCycle.estimatedOvulationDate && (
-                <div className="bg-background rounded-xl px-3 py-2" data-testid="ovulation-date-card">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Est. Ovulation</p>
-                  <p className="text-sm font-medium text-foreground">
+                <div className="rounded-xl bg-muted/40 px-4 py-3" data-testid="ovulation-date-card">
+                  <p className="label-caps">Est. Ovulation</p>
+                  <p className="text-sm font-semibold text-foreground mt-1">
                     {format(parseISO(currentCycle.estimatedOvulationDate), "MMM d")}
                   </p>
                 </div>
               )}
               {currentCycle.daysUntilNextPhase != null && (
-                <div className="bg-background rounded-xl px-3 py-2" data-testid="next-phase-card">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide">Next Phase In</p>
-                  <p className="text-sm font-medium text-foreground">{currentCycle.daysUntilNextPhase} days</p>
+                <div className="rounded-xl bg-muted/40 px-4 py-3" data-testid="next-phase-card">
+                  <p className="label-caps">Next Phase In</p>
+                  <p className="text-sm font-semibold text-foreground mt-1">{currentCycle.daysUntilNextPhase} days</p>
                 </div>
               )}
             </div>
@@ -194,35 +234,40 @@ export default function CycleTracker() {
             <p className="text-xs text-muted-foreground">
               Started {format(parseISO(currentCycle.cycle.startDate), "MMMM d, yyyy")}
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ) : (
-        <Card className="border-dashed" data-testid="no-cycle-card">
-          <CardContent className="py-10 text-center">
-            <CalendarDays size={32} className="text-muted-foreground mx-auto mb-3" />
-            <p className="text-sm font-medium text-foreground">No cycle started yet</p>
-            <p className="text-xs text-muted-foreground mt-1">Start your first cycle to begin tracking</p>
-          </CardContent>
-        </Card>
+        <div
+          className="rounded-3xl border-2 border-dashed border-primary/25 bg-primary/5 py-12 text-center"
+          data-testid="no-cycle-card"
+        >
+          <CalendarDays size={36} className="text-muted-foreground/40 mx-auto mb-3" />
+          <p className="text-sm font-semibold text-foreground">No cycle started yet</p>
+          <p className="text-xs text-muted-foreground mt-1">Tap New Cycle to begin tracking</p>
+        </div>
       )}
 
-      {/* Past cycles */}
+      {/* History */}
       <div>
-        <h2 className="text-sm font-semibold text-foreground/70 uppercase tracking-wider mb-3">Cycle History</h2>
+        <p className="label-caps mb-3">Cycle History</p>
         {cyclesLoading ? (
           <div className="space-y-3">
             {[1, 2].map((i) => <Skeleton key={i} className="h-16 w-full rounded-xl" />)}
           </div>
         ) : cycles && cycles.length > 0 ? (
-          <div className="space-y-3">
+          <div className="space-y-2">
             {cycles.map((cycle, i) => (
               <div
                 key={cycle.id}
-                className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3"
+                className="flex items-center justify-between rounded-2xl border border-border bg-card px-5 py-3.5"
                 data-testid={`cycle-row-${cycle.id}`}
+                style={{ boxShadow: "var(--shadow-xs)" }}
               >
                 <div className="flex items-center gap-3">
-                  <Circle size={8} className={cn("fill-current", i === 0 ? "text-primary" : "text-muted-foreground")} />
+                  <Circle
+                    size={7}
+                    className={cn("fill-current shrink-0", i === 0 ? "text-primary" : "text-muted-foreground/40")}
+                  />
                   <div>
                     <p className="text-sm font-medium text-foreground">
                       {format(parseISO(cycle.startDate), "MMMM d, yyyy")}
@@ -233,7 +278,7 @@ export default function CycleTracker() {
                   </div>
                 </div>
                 {i === 0 && (
-                  <Badge variant="secondary" className="text-xs">Current</Badge>
+                  <Badge variant="secondary" className="text-xs rounded-full">Current</Badge>
                 )}
               </div>
             ))}
