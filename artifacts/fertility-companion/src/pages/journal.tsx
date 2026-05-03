@@ -15,16 +15,17 @@ import { cn } from "@/lib/utils";
 import { SURRENDER_PROMPTS, PROMPT_CATEGORIES } from "@/data/surrender-prompts";
 
 const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; activeBg: string; activeText: string }> = {
-  "Surrender":        { bg: "bg-rose-50",    border: "border-rose-200",   text: "text-rose-700",   activeBg: "bg-rose-500",   activeText: "text-white" },
-  "Letting Go":       { bg: "bg-pink-50",    border: "border-pink-200",   text: "text-pink-700",   activeBg: "bg-pink-500",   activeText: "text-white" },
-  "Trusting Yourself":{ bg: "bg-amber-50",   border: "border-amber-200",  text: "text-amber-700",  activeBg: "bg-amber-500",  activeText: "text-white" },
-  "Trusting Your Body":{ bg: "bg-green-50",  border: "border-green-200",  text: "text-green-700",  activeBg: "bg-green-600",  activeText: "text-white" },
-  "The Two-Week Wait":{ bg: "bg-fuchsia-50", border: "border-fuchsia-200",text: "text-fuchsia-700",activeBg: "bg-fuchsia-500",activeText: "text-white" },
-  "Releasing Control":{ bg: "bg-violet-50",  border: "border-violet-200", text: "text-violet-700", activeBg: "bg-violet-500", activeText: "text-white" },
-  "Self-Compassion":  { bg: "bg-red-50",     border: "border-red-200",    text: "text-red-700",    activeBg: "bg-red-500",    activeText: "text-white" },
-  "Fear & Anxiety":   { bg: "bg-slate-50",   border: "border-slate-200",  text: "text-slate-700",  activeBg: "bg-slate-500",  activeText: "text-white" },
-  "Hope & Becoming":  { bg: "bg-yellow-50",  border: "border-yellow-200", text: "text-yellow-700", activeBg: "bg-yellow-500", activeText: "text-white" },
-  "Grief & Acceptance":{ bg: "bg-blue-50",   border: "border-blue-200",   text: "text-blue-700",   activeBg: "bg-blue-500",   activeText: "text-white" },
+  "Surrender":         { bg: "bg-rose-50",    border: "border-rose-200",    text: "text-rose-700",   activeBg: "bg-rose-500",    activeText: "text-white" },
+  "Letting Go":        { bg: "bg-pink-50",    border: "border-pink-200",    text: "text-pink-700",   activeBg: "bg-pink-500",    activeText: "text-white" },
+  "Faith & Belief":    { bg: "bg-purple-50",  border: "border-purple-200",  text: "text-purple-700", activeBg: "bg-purple-500",  activeText: "text-white" },
+  "Trusting Yourself": { bg: "bg-amber-50",   border: "border-amber-200",   text: "text-amber-700",  activeBg: "bg-amber-500",   activeText: "text-white" },
+  "Trusting Your Body":{ bg: "bg-green-50",   border: "border-green-200",   text: "text-green-700",  activeBg: "bg-green-600",   activeText: "text-white" },
+  "The Two-Week Wait": { bg: "bg-fuchsia-50", border: "border-fuchsia-200", text: "text-fuchsia-700",activeBg: "bg-fuchsia-500", activeText: "text-white" },
+  "Releasing Control": { bg: "bg-violet-50",  border: "border-violet-200",  text: "text-violet-700", activeBg: "bg-violet-500",  activeText: "text-white" },
+  "Self-Compassion":   { bg: "bg-red-50",     border: "border-red-200",     text: "text-red-700",    activeBg: "bg-red-500",     activeText: "text-white" },
+  "Fear & Anxiety":    { bg: "bg-slate-50",   border: "border-slate-200",   text: "text-slate-700",  activeBg: "bg-slate-500",   activeText: "text-white" },
+  "Hope & Becoming":   { bg: "bg-yellow-50",  border: "border-yellow-200",  text: "text-yellow-700", activeBg: "bg-yellow-500",  activeText: "text-white" },
+  "Grief & Acceptance":{ bg: "bg-blue-50",    border: "border-blue-200",    text: "text-blue-700",   activeBg: "bg-blue-500",    activeText: "text-white" },
 };
 
 function PromptsLibrary({ onSelect }: { onSelect: (text: string) => void }) {

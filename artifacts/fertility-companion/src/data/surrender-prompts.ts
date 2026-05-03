@@ -8,6 +8,7 @@ export interface JournalPrompt {
 export const PROMPT_CATEGORIES = [
   "Surrender",
   "Letting Go",
+  "Faith & Belief",
   "Trusting Yourself",
   "Trusting Your Body",
   "The Two-Week Wait",
@@ -1037,5 +1038,107 @@ export const SURRENDER_PROMPTS: JournalPrompt[] = [
     id: 200, category: "Grief & Acceptance",
     question: "What is still possible — even now, even here?",
     starter: "Even with everything that has been hard and uncertain and grieved, what is still possible for me is...",
+  },
+
+  // ─── FAITH & BELIEF ──────────────────────────────────────────────────────────
+  {
+    id: 201, category: "Faith & Belief",
+    question: "What does faith mean to me — not a definition, but a feeling?",
+    starter: "When I actually feel faith — not just think about it — it feels like a quiet knowing that... It is less like certainty and more like...",
+  },
+  {
+    id: 202, category: "Faith & Belief",
+    question: "What do I believe about my own story that fear keeps trying to overwrite?",
+    starter: "Underneath all the fear and the spiraling, there is a part of me that still believes... Fear keeps trying to replace that with...",
+  },
+  {
+    id: 203, category: "Faith & Belief",
+    question: "What would it look like to hand this journey over to something larger than my own efforts?",
+    starter: "If I could truly place this — all of it — into the hands of something wiser, vaster, more patient than me, I imagine I would feel... and I would stop...",
+  },
+  {
+    id: 204, category: "Faith & Belief",
+    question: "What do I believe is still possible for me, even when logic says otherwise?",
+    starter: "Against all the doubt and the data and the difficult days, I still carry a belief that...",
+  },
+  {
+    id: 205, category: "Faith & Belief",
+    question: "What has life given me that I never could have orchestrated on my own?",
+    starter: "There have been moments in my life that arrived not because I controlled them but because something beyond me brought them. One that comes to mind is...",
+  },
+  {
+    id: 206, category: "Faith & Belief",
+    question: "What does it mean to have faith in my own body?",
+    starter: "Having faith in my body — not demanding from it but believing in it — would mean I stop... and instead start trusting that...",
+  },
+  {
+    id: 207, category: "Faith & Belief",
+    question: "What beliefs about deserving have I been carrying that I want to examine?",
+    starter: "Somewhere inside me is a belief that I deserve... or don't deserve... and when I hold it up to the light, what I see is...",
+  },
+  {
+    id: 208, category: "Faith & Belief",
+    question: "What would it feel like to believe — deeply, fully — that my outcome is already being taken care of?",
+    starter: "If I let myself rest in the belief that this is held, that the outcome is being tended to by something greater than my worry — what I feel in my body is...",
+  },
+  {
+    id: 209, category: "Faith & Belief",
+    question: "What prayer, intention, or quiet wish do I carry in my heart right now?",
+    starter: "If I held my deepest wish like a candle in my hands — not demanding, just hoping — it would be the prayer that...",
+  },
+  {
+    id: 210, category: "Faith & Belief",
+    question: "What does surrender to something greater actually look like in my daily life?",
+    starter: "Surrendering to something beyond my control does not mean doing nothing. In practice, for me, it looks like...",
+  },
+  {
+    id: 211, category: "Faith & Belief",
+    question: "What signs or moments have given me a sense that I am not alone in this?",
+    starter: "There have been small moments — a conversation, a quiet feeling, something I read — that made me feel held, not alone. One I remember is...",
+  },
+  {
+    id: 212, category: "Faith & Belief",
+    question: "What would I believe about this journey if I knew, beyond doubt, that it was leading somewhere beautiful?",
+    starter: "If I trusted that this path — exactly this one, with all its pain and detours — was leading me somewhere I needed to go, I would feel... and I would see this time differently because...",
+  },
+  {
+    id: 213, category: "Faith & Belief",
+    question: "What does spiritual rest feel like for me — a release of effort into something larger?",
+    starter: "Spiritual rest — the kind that comes from truly giving this over — feels different from just being tired. It feels like...",
+  },
+  {
+    id: 214, category: "Faith & Belief",
+    question: "What do I believe about the nature of timing — that some things cannot be rushed?",
+    starter: "When I think about all the things in nature and in life that cannot be forced, only waited for — seeds, seasons, healing — I am reminded that...",
+  },
+  {
+    id: 215, category: "Faith & Belief",
+    question: "What would I say to myself if I believed I was being guided, even through the hardest parts?",
+    starter: "If I believed that every hard moment on this journey had a purpose — even if I could not see it yet — I would tell myself...",
+  },
+  {
+    id: 216, category: "Faith & Belief",
+    question: "What ritual or practice helps me reconnect to something bigger than my worry?",
+    starter: "When I need to feel less alone in the magnitude of this, the things that bring me back to something larger are...",
+  },
+  {
+    id: 217, category: "Faith & Belief",
+    question: "What do I want to believe about myself that I am not yet sure I do?",
+    starter: "I want to believe that I am... but the part of me that wavers still whispers... I am working toward the day I believe it fully because...",
+  },
+  {
+    id: 218, category: "Faith & Belief",
+    question: "What does it mean for me to trust the unfolding — not the outcome, but the process?",
+    starter: "Trusting the unfolding means I stop treating this journey as a problem to solve and start treating it as a path to walk. That shift feels like...",
+  },
+  {
+    id: 219, category: "Faith & Belief",
+    question: "What would a woman of deep faith say to me right now, in my own language?",
+    starter: "If the wisest, most grounded, most faith-filled version of me could speak, she would sit beside me and say...",
+  },
+  {
+    id: 220, category: "Faith & Belief",
+    question: "What do I want to leave in the hands of something greater, starting today?",
+    starter: "Today, I want to practice releasing... into hands wiser and more patient than mine. I do this not because I do not care, but because I trust that...",
   },
 ];
