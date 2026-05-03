@@ -21,6 +21,7 @@ import PartnerPage from "@/pages/partner";
 import CycleArtPage from "@/pages/cycle-art";
 import BodyMapPage from "@/pages/body-map";
 import ReportCardPage from "@/pages/report-card";
+import FertileWindowPage from "@/pages/fertile-window";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -52,6 +53,7 @@ function Router() {
         <Route path="/cycle-art" component={CycleArtPage} />
         <Route path="/body-map" component={BodyMapPage} />
         <Route path="/report-card" component={ReportCardPage} />
+        <Route path="/fertile-window" component={FertileWindowPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
