@@ -6,3 +6,4 @@ export * from "./insights";
 export * from "./journal";
 export * from "./bodyMap";
 export * from "./cycleProfiles";
+export * from "./timeCapsules";
