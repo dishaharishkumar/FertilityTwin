@@ -1,9 +1,13 @@
 import { Link, useLocation } from "wouter";
-import { LayoutDashboard, BookOpen, RefreshCw, Sparkles, Menu, X, MessageCircle, BookHeart } from "lucide-react";
+import {
+  LayoutDashboard, BookOpen, RefreshCw, Sparkles, Menu, X,
+  MessageCircle, BookHeart, TrendingUp, Thermometer, Grid3x3,
+  GraduationCap, CheckSquare, Heart,
+} from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-const navItems = [
+const mainNav = [
   { path: "/", label: "Dashboard", icon: LayoutDashboard },
   { path: "/log", label: "Daily Log", icon: BookOpen },
   { path: "/cycle", label: "Cycle", icon: RefreshCw },
@@ -12,9 +16,42 @@ const navItems = [
   { path: "/journal", label: "Journal", icon: BookHeart },
 ];
 
+const exploreNav = [
+  { path: "/stats", label: "My Stats", icon: TrendingUp },
+  { path: "/bbt", label: "BBT Chart", icon: Thermometer },
+  { path: "/patterns", label: "Patterns", icon: Grid3x3 },
+  { path: "/rituals", label: "Daily Rituals", icon: CheckSquare },
+  { path: "/learn", label: "Learn", icon: GraduationCap },
+  { path: "/partner", label: "Partner Mode", icon: Heart },
+];
+
+function NavLink({ item, active, onClick }: { item: { path: string; label: string; icon: React.ElementType }; active: boolean; onClick?: () => void }) {
+  const Icon = item.icon;
+  return (
+    <Link
+      href={item.path}
+      onClick={onClick}
+      className={cn(
+        "relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all",
+        active
+          ? "bg-primary/10 text-primary font-semibold"
+          : "text-muted-foreground hover:text-foreground hover:bg-muted/50 font-medium"
+      )}
+    >
+      {active && (
+        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-primary" />
+      )}
+      <Icon size={16} strokeWidth={active ? 2.5 : 1.75} />
+      {item.label}
+    </Link>
+  );
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const allNav = [...mainNav, ...exploreNav];
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-background">
@@ -40,36 +77,26 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Mobile nav drawer */}
       {mobileOpen && (
-        <div className="md:hidden border-b border-border bg-card px-4 pb-5 pt-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const active = location === item.path;
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                data-testid={`nav-mobile-${item.label.toLowerCase()}`}
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all mt-1",
-                  active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-muted/60"
-                )}
-              >
-                <Icon size={17} strokeWidth={active ? 2.5 : 2} />
-                {item.label}
-              </Link>
-            );
-          })}
+        <div className="md:hidden border-b border-border bg-card px-4 pb-5 pt-2 max-h-[80vh] overflow-y-auto">
+          <p className="label-caps px-3 py-2">Main</p>
+          {mainNav.map((item) => (
+            <NavLink key={item.path} item={item} active={location === item.path} onClick={() => setMobileOpen(false)} />
+          ))}
+          <div className="my-2 mx-3 border-t border-border/60" />
+          <p className="label-caps px-3 py-2">Explore</p>
+          {exploreNav.map((item) => (
+            <NavLink key={item.path} item={item} active={location === item.path} onClick={() => setMobileOpen(false)} />
+          ))}
         </div>
       )}
 
       {/* Desktop sidebar */}
       <aside
-        className="hidden md:flex flex-col w-64 min-h-screen border-r border-border bg-card px-5 py-8"
+        className="hidden md:flex flex-col w-64 min-h-screen border-r border-border bg-card px-5 py-8 overflow-y-auto"
         style={{ boxShadow: "var(--shadow-xs)" }}
       >
         {/* Brand */}
-        <div className="mb-10 px-2">
+        <div className="mb-8 px-2">
           <span
             className="text-[2rem] text-foreground leading-none tracking-tight"
             style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
@@ -79,32 +106,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">Your fertility companion</p>
         </div>
 
-        {/* Nav */}
+        {/* Main nav */}
         <nav className="flex flex-col gap-0.5">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const active = location === item.path;
-            return (
-              <Link
-                key={item.path}
-                href={item.path}
-                data-testid={`nav-${item.label.toLowerCase()}`}
-                className={cn(
-                  "relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all",
-                  active
-                    ? "bg-primary/10 text-primary font-semibold"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50 font-medium"
-                )}
-              >
-                {active && (
-                  <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-full bg-primary" />
-                )}
-                <Icon size={16} strokeWidth={active ? 2.5 : 1.75} />
-                {item.label}
-              </Link>
-            );
-          })}
+          {mainNav.map((item) => (
+            <NavLink key={item.path} item={item} active={location === item.path} />
+          ))}
         </nav>
+
+        {/* Explore section */}
+        <div className="mt-5">
+          <p className="label-caps px-3 mb-2">Explore</p>
+          <nav className="flex flex-col gap-0.5">
+            {exploreNav.map((item) => (
+              <NavLink key={item.path} item={item} active={location === item.path} />
+            ))}
+          </nav>
+        </div>
 
         {/* Footer */}
         <div className="mt-auto px-2 pt-6 border-t border-border/60">

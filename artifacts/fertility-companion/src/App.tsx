@@ -12,6 +12,12 @@ import GenerateInsight from "@/pages/generate-insight";
 import ChatPage from "@/pages/chat";
 import JournalPage from "@/pages/journal";
 import CycleStoryPage from "@/pages/cycle-story";
+import StatsPage from "@/pages/stats";
+import BbtPage from "@/pages/bbt";
+import PatternsPage from "@/pages/patterns";
+import LearnPage from "@/pages/learn";
+import RitualsPage from "@/pages/rituals";
+import PartnerPage from "@/pages/partner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,6 +40,12 @@ function Router() {
         <Route path="/chat" component={ChatPage} />
         <Route path="/journal" component={JournalPage} />
         <Route path="/cycle/story" component={CycleStoryPage} />
+        <Route path="/stats" component={StatsPage} />
+        <Route path="/bbt" component={BbtPage} />
+        <Route path="/patterns" component={PatternsPage} />
+        <Route path="/learn" component={LearnPage} />
+        <Route path="/rituals" component={RitualsPage} />
+        <Route path="/partner" component={PartnerPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

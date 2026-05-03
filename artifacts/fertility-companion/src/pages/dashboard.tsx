@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, BookOpen, Heart, Flame, MessageCircle, Feather, Moon, ChevronDown, ChevronUp, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { format, getDayOfYear } from "date-fns";
+import { format, getDayOfYear, differenceInDays, parseISO, addDays, subDays } from "date-fns";
 
 // ─── PHASE CONFIG ──────────────────────────────────────────────────────────────
 const phaseConfig: Record<string, { label: string; description: string; gradient: string; border: string; text: string; badge: string }> = {
@@ -536,6 +536,57 @@ export default function Dashboard() {
             Start tracking
           </Link>
         </div>
+      )}
+
+      {/* Fertile Window Countdown */}
+      {currentCycle?.estimatedOvulationDate && (
+        (() => {
+          const ovDate = parseISO(currentCycle.estimatedOvulationDate);
+          const fertileStart = subDays(ovDate, 5);
+          const fertileEnd = addDays(ovDate, 1);
+          const today2 = new Date();
+          const daysToStart = differenceInDays(fertileStart, today2);
+          const daysToOv = differenceInDays(ovDate, today2);
+          const inWindow = today2 >= fertileStart && today2 <= fertileEnd;
+          const passed = today2 > fertileEnd;
+
+          if (passed) return null;
+
+          return (
+            <div
+              className="rounded-2xl border border-primary/20 px-5 py-4 flex items-center gap-4"
+              style={{ background: "linear-gradient(135deg, hsl(345 48% 97%) 0%, hsl(280 20% 97%) 100%)", boxShadow: "var(--shadow-xs)" }}
+            >
+              <div className="w-10 h-10 rounded-xl bg-primary/12 flex items-center justify-center shrink-0">
+                <span className="text-lg">🌸</span>
+              </div>
+              <div className="flex-1">
+                {inWindow ? (
+                  <>
+                    <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                      You're in your fertile window
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {daysToOv === 0 ? "Estimated ovulation today" : daysToOv > 0 ? `Estimated ovulation in ${daysToOv} day${daysToOv !== 1 ? "s" : ""}` : "Ovulation likely just occurred"}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "var(--app-font-serif)" }}>
+                      Fertile window in {daysToStart === 1 ? "1 day" : `${daysToStart} days`}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Starts {format(fertileStart, "MMM d")} · Ovulation ~{format(ovDate, "MMM d")}
+                    </p>
+                  </>
+                )}
+              </div>
+              <Link href="/bbt" className="text-xs text-primary font-semibold hover:underline shrink-0">
+                BBT →
+              </Link>
+            </div>
+          );
+        })()
       )}
 
       {/* Body Biology */}
