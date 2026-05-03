@@ -18,6 +18,8 @@ import PatternsPage from "@/pages/patterns";
 import LearnPage from "@/pages/learn";
 import RitualsPage from "@/pages/rituals";
 import PartnerPage from "@/pages/partner";
+import CycleArtPage from "@/pages/cycle-art";
+import BodyMapPage from "@/pages/body-map";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +48,8 @@ function Router() {
         <Route path="/learn" component={LearnPage} />
         <Route path="/rituals" component={RitualsPage} />
         <Route path="/partner" component={PartnerPage} />
+        <Route path="/cycle-art" component={CycleArtPage} />
+        <Route path="/body-map" component={BodyMapPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
