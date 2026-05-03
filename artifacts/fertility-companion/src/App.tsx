@@ -24,6 +24,7 @@ import ReportCardPage from "@/pages/report-card";
 import FertileWindowPage from "@/pages/fertile-window";
 import SymptomDiaryPage from "@/pages/symptom-diary";
 import ProbabilityPage from "@/pages/probability";
+import CycleTwinPage from "@/pages/cycle-twin";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -58,6 +59,7 @@ function Router() {
         <Route path="/fertile-window" component={FertileWindowPage} />
         <Route path="/symptom-diary" component={SymptomDiaryPage} />
         <Route path="/probability" component={ProbabilityPage} />
+        <Route path="/cycle-twin" component={CycleTwinPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

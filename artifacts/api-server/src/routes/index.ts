@@ -8,6 +8,7 @@ import chatRouter from "./chat";
 import journalRouter from "./journal";
 import bodyMapRouter from "./bodyMap";
 import reportCardRouter from "./reportCard";
+import cycleTwinRouter from "./cycleTwin";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use(chatRouter);
 router.use(journalRouter);
 router.use(bodyMapRouter);
 router.use(reportCardRouter);
+router.use(cycleTwinRouter);
 
 export default router;
