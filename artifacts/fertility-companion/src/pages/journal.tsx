@@ -9,22 +9,108 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
-import { BookHeart, Trash2, PenLine, Sparkles } from "lucide-react";
+import { BookHeart, Trash2, PenLine, Sparkles, ChevronDown, ChevronUp, Feather } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { cn } from "@/lib/utils";
+import { SURRENDER_PROMPTS, PROMPT_CATEGORIES } from "@/data/surrender-prompts";
 
-const PROMPTS = [
-  "How am I actually feeling today — not just physically?",
-  "What am I afraid to Google but keep thinking about?",
-  "What do I wish someone in my life understood?",
-  "What would I tell my future self about this moment?",
-  "What does my body feel like it's asking for?",
-  "What would it feel like to truly surrender the outcome today?",
-  "What am I gripping tightly that I could gently release?",
-  "Where in my body am I holding tension, and what is it asking me to trust?",
-  "What would I do differently today if I fully trusted myself?",
-  "What does 'letting go' look like for me — not giving up, but freeing?",
-];
+const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string; activeBg: string; activeText: string }> = {
+  "Surrender":        { bg: "bg-rose-50",    border: "border-rose-200",   text: "text-rose-700",   activeBg: "bg-rose-500",   activeText: "text-white" },
+  "Letting Go":       { bg: "bg-pink-50",    border: "border-pink-200",   text: "text-pink-700",   activeBg: "bg-pink-500",   activeText: "text-white" },
+  "Trusting Yourself":{ bg: "bg-amber-50",   border: "border-amber-200",  text: "text-amber-700",  activeBg: "bg-amber-500",  activeText: "text-white" },
+  "Trusting Your Body":{ bg: "bg-green-50",  border: "border-green-200",  text: "text-green-700",  activeBg: "bg-green-600",  activeText: "text-white" },
+  "The Two-Week Wait":{ bg: "bg-fuchsia-50", border: "border-fuchsia-200",text: "text-fuchsia-700",activeBg: "bg-fuchsia-500",activeText: "text-white" },
+  "Releasing Control":{ bg: "bg-violet-50",  border: "border-violet-200", text: "text-violet-700", activeBg: "bg-violet-500", activeText: "text-white" },
+  "Self-Compassion":  { bg: "bg-red-50",     border: "border-red-200",    text: "text-red-700",    activeBg: "bg-red-500",    activeText: "text-white" },
+  "Fear & Anxiety":   { bg: "bg-slate-50",   border: "border-slate-200",  text: "text-slate-700",  activeBg: "bg-slate-500",  activeText: "text-white" },
+  "Hope & Becoming":  { bg: "bg-yellow-50",  border: "border-yellow-200", text: "text-yellow-700", activeBg: "bg-yellow-500", activeText: "text-white" },
+  "Grief & Acceptance":{ bg: "bg-blue-50",   border: "border-blue-200",   text: "text-blue-700",   activeBg: "bg-blue-500",   activeText: "text-white" },
+};
+
+function PromptsLibrary({ onSelect }: { onSelect: (text: string) => void }) {
+  const [activeCategory, setActiveCategory] = useState<string>(PROMPT_CATEGORIES[0]);
+  const [expanded, setExpanded] = useState(false);
+  const [showAll, setShowAll] = useState(false);
+
+  const filtered = SURRENDER_PROMPTS.filter(p => p.category === activeCategory);
+  const visible = showAll ? filtered : filtered.slice(0, 4);
+  const colors = CATEGORY_COLORS[activeCategory];
+
+  return (
+    <div className="space-y-3">
+      <button
+        onClick={() => setExpanded(e => !e)}
+        className="w-full flex items-center justify-between group"
+      >
+        <div className="flex items-center gap-2">
+          <Feather size={12} className="text-primary/70" />
+          <span className="label-caps" style={{ color: "hsl(var(--primary))" }}>
+            200 surrender & letting-go prompts
+          </span>
+        </div>
+        {expanded
+          ? <ChevronUp size={14} className="text-muted-foreground/60" />
+          : <ChevronDown size={14} className="text-muted-foreground/60" />}
+      </button>
+
+      {expanded && (
+        <div className="space-y-3 animate-in fade-in slide-in-from-top-1 duration-200">
+          <div className="flex flex-wrap gap-1.5">
+            {PROMPT_CATEGORIES.map(cat => {
+              const c = CATEGORY_COLORS[cat];
+              const isActive = activeCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  onClick={() => { setActiveCategory(cat); setShowAll(false); }}
+                  className={cn(
+                    "text-[11px] font-semibold px-2.5 py-1 rounded-full border transition-all",
+                    isActive
+                      ? `${c.activeBg} ${c.activeText} border-transparent`
+                      : `${c.bg} ${c.border} ${c.text} hover:opacity-80`
+                  )}
+                >
+                  {cat}
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="space-y-2">
+            {visible.map(prompt => (
+              <button
+                key={prompt.id}
+                onClick={() => onSelect(`${prompt.question}\n\n${prompt.starter}`)}
+                data-testid={`prompt-${prompt.id}`}
+                className={cn(
+                  "w-full text-left rounded-xl border px-4 py-3 transition-all group",
+                  "hover:border-primary/25 hover:bg-primary/5",
+                  colors.bg, colors.border
+                )}
+              >
+                <p className={cn("text-xs font-semibold leading-snug mb-1", colors.text)}>
+                  {prompt.question}
+                </p>
+                <p className="text-[11px] text-muted-foreground leading-relaxed italic">
+                  {prompt.starter}
+                </p>
+              </button>
+            ))}
+          </div>
+
+          {filtered.length > 4 && (
+            <button
+              onClick={() => setShowAll(s => !s)}
+              className="text-xs text-primary font-semibold hover:underline underline-offset-2"
+            >
+              {showAll ? `Show fewer` : `Show all ${filtered.length} prompts in this category`}
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function JournalPage() {
   const { toast } = useToast();
@@ -111,24 +197,8 @@ export default function JournalPage() {
             disabled={createEntry.isPending}
           />
 
-          {/* Writing prompts */}
-          {!text && (
-            <div className="space-y-2">
-              <p className="label-caps">Prompts to get you started</p>
-              <div className="flex flex-wrap gap-1.5">
-                {PROMPTS.map((p) => (
-                  <button
-                    key={p}
-                    onClick={() => setText(p + " ")}
-                    data-testid={`prompt-${p.slice(0, 15)}`}
-                    className="text-xs px-3 py-1.5 rounded-full border border-border bg-muted/50 text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/8 transition-all"
-                  >
-                    {p}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* 200 prompts library — always visible, collapsed by default */}
+          <PromptsLibrary onSelect={(t) => { setText(t); }} />
 
           <Button
             onClick={handleSubmit}
