@@ -30,6 +30,7 @@ import TimeCapsulePage from "@/pages/time-capsule";
 import MoodWeatherPage from "@/pages/mood-weather";
 import CyclePhaseTrackerPage from "@/pages/cycle-phases";
 import PeriodPredictorPage from "@/pages/period-predictor";
+import HormoneHubPage from "@/pages/hormone-hub";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -70,6 +71,7 @@ function Router() {
         <Route path="/mood-weather" component={MoodWeatherPage} />
         <Route path="/cycle-phases" component={CyclePhaseTrackerPage} />
         <Route path="/period-predictor" component={PeriodPredictorPage} />
+        <Route path="/hormone-hub" component={HormoneHubPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

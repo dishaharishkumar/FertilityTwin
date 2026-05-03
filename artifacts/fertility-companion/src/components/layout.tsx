@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard, BookOpen, RefreshCw, Sparkles, Menu, X,
   MessageCircle, BookHeart, TrendingUp, Thermometer, Grid3x3,
-  GraduationCap, CheckSquare, Heart, Palette, MapPin, Award, Flower2, BookMarked, Gauge, Users, Mail, Archive, Cloud, Flag, CalendarClock,
+  GraduationCap, CheckSquare, Heart, Palette, MapPin, Award, Flower2, BookMarked, Gauge, Users, Mail, Archive, Cloud, Flag, CalendarClock, FlaskConical,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -35,6 +35,7 @@ const exploreNav = [
   { path: "/mood-weather", label: "Mood Weather", icon: Cloud },
   { path: "/cycle-phases", label: "Phase Tracker", icon: Flag },
   { path: "/period-predictor", label: "Period Predictor", icon: CalendarClock },
+  { path: "/hormone-hub", label: "Hormone Hub", icon: FlaskConical },
 ];
 
 function NavLink({ item, active, onClick }: { item: { path: string; label: string; icon: React.ElementType }; active: boolean; onClick?: () => void }) {
