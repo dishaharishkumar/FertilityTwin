@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Send, Sparkles, Heart, HelpCircle, Wind } from "lucide-react";
+import { Send, Sparkles, Heart, HelpCircle, Wind, Feather, Anchor, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const STARTERS = [
@@ -16,6 +16,9 @@ const STARTERS = [
   { text: "I just feel so alone in this journey.", icon: Heart },
   { text: "Can you help me understand my TWW symptoms?", icon: Sparkles },
   { text: "I need something to calm me down.", icon: Wind },
+  { text: "I'm struggling to let go of control over this process.", icon: Feather },
+  { text: "How do I trust my body when it feels like it's failing me?", icon: Anchor },
+  { text: "Help me surrender to the uncertainty without losing hope.", icon: Star },
 ];
 
 export default function ChatPage() {

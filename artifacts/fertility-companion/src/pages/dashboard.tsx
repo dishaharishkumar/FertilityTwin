@@ -6,9 +6,65 @@ import {
 } from "@workspace/api-client-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, BookOpen, Heart, Flame, MessageCircle } from "lucide-react";
+import { Sparkles, BookOpen, Heart, Flame, MessageCircle, Feather } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { format, getDayOfYear } from "date-fns";
+
+const SURRENDER_AFFIRMATIONS = [
+  "I release what I cannot control and trust my body's deep wisdom.",
+  "Surrender is not giving up. It is making space for something greater.",
+  "I trust the timing of my life. My body knows what it is doing.",
+  "I let go of the need to know, and open to the miracle of becoming.",
+  "I do not need to force what is meant to flow.",
+  "I am not behind. I am exactly where I am meant to be.",
+  "What I cannot carry, I release with love.",
+  "My worthiness is not tied to any result.",
+  "I breathe in trust. I breathe out fear.",
+  "Letting go does not mean I do not care. It means I trust something wiser than my worry.",
+  "My journey is not a race. It is a becoming.",
+  "I honor my body, my feelings, and this sacred, uncertain road.",
+  "I am held. I am guided. I am not alone.",
+  "I release the story that something is wrong with me.",
+  "Peace is available to me, right now, even in uncertainty.",
+  "I choose to trust the process, even when I cannot see the path.",
+  "My heart is strong enough to hold both hope and uncertainty.",
+  "I am more than my results. I am whole, right now.",
+  "Surrendering control is how I reclaim my peace.",
+  "I trust my body. I trust the process. I trust myself.",
+  "Today I give myself permission to rest in not knowing.",
+  "I am doing the best I can, and that is more than enough.",
+  "My story is still being written. I will not rush the ending.",
+  "My body is not broken. It is learning, growing, and trying every day.",
+  "I release the anxiety of the outcome and return to the peace of now.",
+  "Trust is not passive. It is the bravest thing I can do today.",
+  "I do not need answers today. I only need presence.",
+  "The waiting is not wasted time. Something is always growing.",
+];
+
+function DailyAffirmation() {
+  const idx = getDayOfYear(new Date()) % SURRENDER_AFFIRMATIONS.length;
+  const affirmation = SURRENDER_AFFIRMATIONS[idx];
+  return (
+    <div
+      className="rounded-2xl px-5 py-4 border border-primary/15"
+      style={{
+        background: "linear-gradient(135deg, hsl(345,40%,97%) 0%, hsl(130,18%,96%) 100%)",
+        boxShadow: "var(--shadow-sm)",
+      }}
+    >
+      <div className="flex items-center gap-2 mb-2">
+        <Feather size={12} className="text-primary/70" />
+        <span className="label-caps" style={{ color: "hsl(345,30%,55%)" }}>Today's reminder</span>
+      </div>
+      <p
+        className="text-sm text-foreground/80 leading-relaxed"
+        style={{ fontFamily: "var(--app-font-serif)", fontStyle: "italic" }}
+      >
+        {affirmation}
+      </p>
+    </div>
+  );
+}
 
 const phaseConfig: Record<string, { label: string; description: string; gradient: string; border: string; text: string; badge: string }> = {
   menstrual: {
@@ -134,6 +190,9 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+
+      {/* Daily Affirmation */}
+      <DailyAffirmation />
 
       {/* TWW Banner */}
       {(summary?.isInTww || currentCycle?.isInTww) && (

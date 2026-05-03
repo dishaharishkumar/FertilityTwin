@@ -19,6 +19,11 @@ const PROMPTS = [
   "What do I wish someone in my life understood?",
   "What would I tell my future self about this moment?",
   "What does my body feel like it's asking for?",
+  "What would it feel like to truly surrender the outcome today?",
+  "What am I gripping tightly that I could gently release?",
+  "Where in my body am I holding tension, and what is it asking me to trust?",
+  "What would I do differently today if I fully trusted myself?",
+  "What does 'letting go' look like for me — not giving up, but freeing?",
 ];
 
 export default function JournalPage() {
