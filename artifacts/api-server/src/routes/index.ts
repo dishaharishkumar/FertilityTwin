@@ -7,6 +7,7 @@ import dashboardRouter from "./dashboard";
 import chatRouter from "./chat";
 import journalRouter from "./journal";
 import bodyMapRouter from "./bodyMap";
+import reportCardRouter from "./reportCard";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(dashboardRouter);
 router.use(chatRouter);
 router.use(journalRouter);
 router.use(bodyMapRouter);
+router.use(reportCardRouter);
 
 export default router;

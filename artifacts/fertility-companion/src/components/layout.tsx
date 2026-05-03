@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard, BookOpen, RefreshCw, Sparkles, Menu, X,
   MessageCircle, BookHeart, TrendingUp, Thermometer, Grid3x3,
-  GraduationCap, CheckSquare, Heart, Palette, MapPin,
+  GraduationCap, CheckSquare, Heart, Palette, MapPin, Award,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -25,6 +25,7 @@ const exploreNav = [
   { path: "/partner", label: "Partner Mode", icon: Heart },
   { path: "/cycle-art", label: "Cycle Portrait", icon: Palette },
   { path: "/body-map", label: "Body Map", icon: MapPin },
+  { path: "/report-card", label: "Report Cards", icon: Award },
 ];
 
 function NavLink({ item, active, onClick }: { item: { path: string; label: string; icon: React.ElementType }; active: boolean; onClick?: () => void }) {

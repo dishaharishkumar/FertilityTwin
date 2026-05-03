@@ -20,6 +20,7 @@ import RitualsPage from "@/pages/rituals";
 import PartnerPage from "@/pages/partner";
 import CycleArtPage from "@/pages/cycle-art";
 import BodyMapPage from "@/pages/body-map";
+import ReportCardPage from "@/pages/report-card";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,7 @@ function Router() {
         <Route path="/partner" component={PartnerPage} />
         <Route path="/cycle-art" component={CycleArtPage} />
         <Route path="/body-map" component={BodyMapPage} />
+        <Route path="/report-card" component={ReportCardPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
