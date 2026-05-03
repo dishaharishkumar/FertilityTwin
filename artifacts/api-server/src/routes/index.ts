@@ -16,6 +16,7 @@ import stressSleepRouter from "./stressSleepImpact";
 import cycleComparisonRouter from "./cycleComparison";
 import quizContextRouter from "./quizContext";
 import symptomHeatmapRouter from "./symptomHeatmap";
+import fertilityScoreRouter from "./fertilityScore";
 
 const router: IRouter = Router();
 
@@ -36,5 +37,6 @@ router.use(stressSleepRouter);
 router.use(cycleComparisonRouter);
 router.use(quizContextRouter);
 router.use(symptomHeatmapRouter);
+router.use(fertilityScoreRouter);
 
 export default router;

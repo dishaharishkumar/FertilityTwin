@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import {
   useGetDashboardSummary, getGetDashboardSummaryQueryKey,
@@ -7,7 +7,7 @@ import {
 } from "@workspace/api-client-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, BookOpen, Heart, Flame, MessageCircle, Feather, Moon, ChevronDown, ChevronUp, X } from "lucide-react";
+import { Sparkles, BookOpen, Heart, Flame, MessageCircle, Feather, Moon, ChevronDown, ChevronUp, X, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format, getDayOfYear, differenceInDays, parseISO, addDays, subDays } from "date-fns";
 
@@ -227,6 +227,71 @@ const BIOLOGY: Record<string, { title: string; body: string }> = {
     body: "If fertilization occurred, a single cell is now dividing quietly inside you — becoming 2, then 4, then 8 cells, then a blastocyst — over the next several days. Around day 6–10 after ovulation, it may implant into your uterine lining. Progesterone stays high regardless, holding the lining in place. Early pregnancy and PMS symptoms overlap almost completely — this is why the wait is so hard. Your body keeps its secrets until hCG has time to rise. Something is always happening, even in silence.",
   },
 };
+
+// ─── FERTILITY SCORE WIDGET ───────────────────────────────────────────────────
+const BASE_FS = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+function scoreColor(s: number) {
+  if (s >= 75) return "#10b981";
+  if (s >= 55) return "#f59e0b";
+  if (s >= 35) return "#ec4899";
+  return "#94a3b8";
+}
+
+function MiniRing({ score }: { score: number }) {
+  const r = 28; const cx = 36; const circumference = 2 * Math.PI * r;
+  const dash = (score / 100) * circumference;
+  const color = scoreColor(score);
+  return (
+    <svg width={72} height={72} viewBox="0 0 72 72">
+      <circle cx={cx} cy={cx} r={r} fill="none" stroke="#f1f5f9" strokeWidth={8} />
+      <circle cx={cx} cy={cx} r={r} fill="none" stroke={color} strokeWidth={8}
+        strokeDasharray={`${dash} ${circumference - dash}`} strokeLinecap="round"
+        transform={`rotate(-90 ${cx} ${cx})`} style={{ transition: "stroke-dasharray 1s ease" }} />
+      <text x={cx} y={cx + 4} textAnchor="middle" fontSize={14} fontWeight="700" fill={color}
+        fontFamily="var(--app-font-serif)">{score}</text>
+    </svg>
+  );
+}
+
+interface FsData { score: number; phase: string; inFertileWindow: boolean; interpretation: string; currentDay: number; cycleLength: number }
+
+function FertilityScoreWidget() {
+  const [fs, setFs] = useState<FsData | null>(null);
+  useEffect(() => {
+    fetch(`${BASE_FS}/api/fertility-score`).then(r => r.json()).then(setFs).catch(() => {});
+  }, []);
+
+  if (!fs) return null;
+  const color = scoreColor(fs.score);
+
+  return (
+    <Link href="/fertility-score">
+      <div
+        className="rounded-2xl bg-card border border-border px-5 py-4 flex items-center gap-4 hover:border-primary/40 hover:bg-primary/[0.02] transition-all cursor-pointer"
+        style={{ boxShadow: "var(--shadow-sm)", borderLeft: `4px solid ${color}` }}
+      >
+        <MiniRing score={fs.score} />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-0.5">
+            <Target size={12} className="text-muted-foreground" />
+            <span className="label-caps text-[10px]">Today's Fertility Score</span>
+            {fs.inFertileWindow && (
+              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium">
+                Fertile window open
+              </span>
+            )}
+          </div>
+          <p className="text-sm font-semibold text-foreground">
+            {fs.score}/100 · <span style={{ color }}>{fs.phase} phase</span>
+          </p>
+          <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{fs.interpretation}</p>
+        </div>
+        <span className="text-muted-foreground text-sm shrink-0">→</span>
+      </div>
+    </Link>
+  );
+}
 
 function BodyBiologyCard({ phase }: { phase: string | null }) {
   const [open, setOpen] = useState(false);
@@ -588,6 +653,9 @@ export default function Dashboard() {
           );
         })()
       )}
+
+      {/* Fertility Score Widget */}
+      <FertilityScoreWidget />
 
       {/* Body Biology */}
       <BodyBiologyCard phase={phase} />

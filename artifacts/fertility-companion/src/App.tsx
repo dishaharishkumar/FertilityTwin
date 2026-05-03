@@ -37,6 +37,7 @@ import NutritionGuidePage from "@/pages/nutrition-guide";
 import MovementPlannerPage from "@/pages/movement-planner";
 import BodyQuizPage from "@/pages/body-quiz";
 import SymptomHeatmapPage from "@/pages/symptom-heatmap";
+import FertilityScorePage from "@/pages/fertility-score";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -84,6 +85,7 @@ function Router() {
         <Route path="/movement-planner" component={MovementPlannerPage} />
         <Route path="/body-quiz" component={BodyQuizPage} />
         <Route path="/symptom-heatmap" component={SymptomHeatmapPage} />
+        <Route path="/fertility-score" component={FertilityScorePage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
