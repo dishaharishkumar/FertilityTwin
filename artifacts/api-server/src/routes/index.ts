@@ -13,6 +13,7 @@ import timeCapsuleRouter from "./timeCapsule";
 import cycleMarkersRouter from "./cycleMarkers";
 import periodPredictorRouter from "./periodPredictor";
 import stressSleepRouter from "./stressSleepImpact";
+import cycleComparisonRouter from "./cycleComparison";
 
 const router: IRouter = Router();
 
@@ -30,5 +31,6 @@ router.use(timeCapsuleRouter);
 router.use(cycleMarkersRouter);
 router.use(periodPredictorRouter);
 router.use(stressSleepRouter);
+router.use(cycleComparisonRouter);
 
 export default router;
