@@ -14,6 +14,7 @@ import cycleMarkersRouter from "./cycleMarkers";
 import periodPredictorRouter from "./periodPredictor";
 import stressSleepRouter from "./stressSleepImpact";
 import cycleComparisonRouter from "./cycleComparison";
+import quizContextRouter from "./quizContext";
 
 const router: IRouter = Router();
 
@@ -32,5 +33,6 @@ router.use(cycleMarkersRouter);
 router.use(periodPredictorRouter);
 router.use(stressSleepRouter);
 router.use(cycleComparisonRouter);
+router.use(quizContextRouter);
 
 export default router;

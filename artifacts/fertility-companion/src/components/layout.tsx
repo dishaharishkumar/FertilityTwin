@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import {
   LayoutDashboard, BookOpen, RefreshCw, Sparkles, Menu, X,
   MessageCircle, BookHeart, TrendingUp, Thermometer, Grid3x3,
-  GraduationCap, CheckSquare, Heart, Palette, MapPin, Award, Flower2, BookMarked, Gauge, Users, Mail, Archive, Cloud, Flag, CalendarClock, FlaskConical, BrainCircuit, GitCompare,
+  GraduationCap, CheckSquare, Heart, Palette, MapPin, Award, Flower2, BookMarked, Gauge, Users, Mail, Archive, Cloud, Flag, CalendarClock, FlaskConical, BrainCircuit, GitCompare, Salad, Dumbbell, Brain,
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -38,6 +38,9 @@ const exploreNav = [
   { path: "/hormone-hub", label: "Hormone Hub", icon: FlaskConical },
   { path: "/stress-sleep", label: "Stress & Sleep", icon: BrainCircuit },
   { path: "/cycle-comparison", label: "Cycle Comparison", icon: GitCompare },
+  { path: "/nutrition-guide", label: "Nutrition Guide", icon: Salad },
+  { path: "/movement-planner", label: "Movement Planner", icon: Dumbbell },
+  { path: "/body-quiz", label: "Body Literacy Quiz", icon: Brain },
 ];
 
 function NavLink({ item, active, onClick }: { item: { path: string; label: string; icon: React.ElementType }; active: boolean; onClick?: () => void }) {

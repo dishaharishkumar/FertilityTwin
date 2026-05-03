@@ -33,6 +33,9 @@ import PeriodPredictorPage from "@/pages/period-predictor";
 import HormoneHubPage from "@/pages/hormone-hub";
 import StressSleepPage from "@/pages/stress-sleep";
 import CycleComparisonPage from "@/pages/cycle-comparison";
+import NutritionGuidePage from "@/pages/nutrition-guide";
+import MovementPlannerPage from "@/pages/movement-planner";
+import BodyQuizPage from "@/pages/body-quiz";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -76,6 +79,9 @@ function Router() {
         <Route path="/hormone-hub" component={HormoneHubPage} />
         <Route path="/stress-sleep" component={StressSleepPage} />
         <Route path="/cycle-comparison" component={CycleComparisonPage} />
+        <Route path="/nutrition-guide" component={NutritionGuidePage} />
+        <Route path="/movement-planner" component={MovementPlannerPage} />
+        <Route path="/body-quiz" component={BodyQuizPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
