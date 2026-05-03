@@ -10,6 +10,7 @@ import bodyMapRouter from "./bodyMap";
 import reportCardRouter from "./reportCard";
 import cycleTwinRouter from "./cycleTwin";
 import timeCapsuleRouter from "./timeCapsule";
+import cycleMarkersRouter from "./cycleMarkers";
 
 const router: IRouter = Router();
 
@@ -24,5 +25,6 @@ router.use(bodyMapRouter);
 router.use(reportCardRouter);
 router.use(cycleTwinRouter);
 router.use(timeCapsuleRouter);
+router.use(cycleMarkersRouter);
 
 export default router;

@@ -28,6 +28,7 @@ import CycleTwinPage from "@/pages/cycle-twin";
 import CycleLetterPage from "@/pages/cycle-letter";
 import TimeCapsulePage from "@/pages/time-capsule";
 import MoodWeatherPage from "@/pages/mood-weather";
+import CyclePhaseTrackerPage from "@/pages/cycle-phases";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +67,7 @@ function Router() {
         <Route path="/cycle-letter" component={CycleLetterPage} />
         <Route path="/time-capsule" component={TimeCapsulePage} />
         <Route path="/mood-weather" component={MoodWeatherPage} />
+        <Route path="/cycle-phases" component={CyclePhaseTrackerPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
