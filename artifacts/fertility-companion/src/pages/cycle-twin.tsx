@@ -119,7 +119,7 @@ export default function CycleTwinPage() {
         <div>
           <p className="text-sm font-semibold text-emerald-800 mb-0.5">Fully anonymous</p>
           <p className="text-xs text-emerald-700 leading-relaxed">
-            Bloom shares only your cycle length range and top symptom categories — never your name, dates, location, or any identifying information. Your anonymous ID is randomly generated and only stored in this browser.
+            Fertility Companion shares only your cycle length range and top symptom categories — never your name, dates, location, or any identifying information. Your anonymous ID is randomly generated and only stored in this browser.
           </p>
         </div>
       </Card>

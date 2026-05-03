@@ -76,7 +76,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           className="text-xl text-foreground tracking-tight"
           style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
         >
-          Bloom
+          Fertility Companion
         </span>
         <button
           data-testid="button-mobile-menu"
@@ -113,9 +113,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
             className="text-[2rem] text-foreground leading-none tracking-tight"
             style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
           >
-            Bloom
+            Fertility Companion
           </span>
-          <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">Your fertility companion</p>
+          <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">Your personal cycle companion</p>
         </div>
 
         {/* Main nav */}

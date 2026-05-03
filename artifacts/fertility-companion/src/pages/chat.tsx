@@ -93,7 +93,7 @@ export default function ChatPage() {
             className="text-[1.6rem] text-foreground leading-tight"
             style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
           >
-            Bloom Companion
+            Fertility Companion
           </h1>
         </div>
         <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">
@@ -215,7 +215,7 @@ export default function ChatPage() {
           </Button>
         </div>
         <p className="text-[11px] text-muted-foreground/70 mt-2 text-center">
-          Bloom is not a medical provider. Always consult your doctor for medical concerns.
+          Fertility Companion is not a medical provider. Always consult your doctor for medical concerns.
         </p>
       </div>
     </div>

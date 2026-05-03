@@ -283,7 +283,7 @@ export default function ProbabilityPage() {
               See your supportive estimate
             </p>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Bloom looks at your phase, BBT pattern, recent symptoms, cycle regularity,
+              Fertility Companion looks at your phase, BBT pattern, recent symptoms, cycle regularity,
               and logging history to produce a supportive number.
             </p>
           </div>
@@ -361,7 +361,7 @@ export default function ProbabilityPage() {
             <div className="flex gap-3">
               <Info size={15} className="flex-shrink-0 mt-0.5 text-amber-600" />
               <p className="text-xs text-amber-800 leading-relaxed">
-                <strong>This is not a pregnancy test or medical assessment.</strong> Bloom's
+                <strong>This is not a pregnancy test or medical assessment.</strong> Fertility Companion's
                 estimate is for emotional support and pattern awareness only. It is calculated
                 entirely from the data you have logged. Please consult a healthcare provider
                 for medical advice, diagnosis, or treatment.

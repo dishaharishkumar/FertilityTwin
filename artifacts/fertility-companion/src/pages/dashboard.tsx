@@ -322,7 +322,7 @@ function RestPermissionSlip({ phase, onClose }: { phase: string | null; onClose:
             className="text-base text-primary"
             style={{ fontFamily: "var(--app-font-serif)", fontWeight: 600 }}
           >
-            — Bloom
+            — Fertility Companion
           </p>
           <p className="text-[11px] text-muted-foreground/60 mt-1">Your fertility companion</p>
         </div>
@@ -657,7 +657,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-sm font-semibold text-foreground">Read my cycle story</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Bloom narrates this cycle as a personal chapter</p>
+              <p className="text-xs text-muted-foreground mt-0.5">Fertility Companion narrates this cycle as a personal chapter</p>
             </div>
           </Link>
           {!summary?.lastLogDate || summary.lastLogDate !== format(new Date(), "yyyy-MM-dd") ? (
@@ -700,7 +700,7 @@ export default function Dashboard() {
               <MessageCircle size={18} className="text-primary" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground">Talk to Bloom</p>
+              <p className="text-sm font-semibold text-foreground">Talk to Fertility Companion</p>
               <p className="text-xs text-muted-foreground mt-0.5">Ask about your body or feelings</p>
             </div>
           </Link>

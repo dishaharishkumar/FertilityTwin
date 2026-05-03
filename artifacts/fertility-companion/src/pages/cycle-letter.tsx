@@ -105,18 +105,18 @@ function buildLetter(
       }
     }
   } else if (sortedCycles.length > 0) {
-    p4 = `You have ${sortedCycles.length} cycle${sortedCycles.length !== 1 ? "s" : ""} recorded with Bloom. That is a beginning — and beginnings matter. Every cycle you log adds another chapter to the story your body is telling. Keep writing it.`;
+    p4 = `You have ${sortedCycles.length} cycle${sortedCycles.length !== 1 ? "s" : ""} recorded with Fertility Companion. That is a beginning — and beginnings matter. Every cycle you log adds another chapter to the story your body is telling. Keep writing it.`;
   } else {
-    p4 = `You haven't logged a cycle start date yet, and that's okay. When you're ready, that single entry will unlock so much more of what Bloom can tell you. Your data is waiting for you.`;
+    p4 = `You haven't logged a cycle start date yet, and that's okay. When you're ready, that single entry will unlock so much more of what Fertility Companion can tell you. Your data is waiting for you.`;
   }
 
   // ── Logging & closing ──
   const totalLogs = logs.length;
   let p5 = "";
   if (totalLogs >= 20) {
-    p5 = `You have logged ${totalLogs} days with Bloom. That number represents ${totalLogs} mornings or evenings when you chose to check in with yourself — to notice, to record, to not let the day pass without a moment of self-awareness. That is a practice. And practices, sustained, become wisdom.`;
+    p5 = `You have logged ${totalLogs} days with Fertility Companion. That number represents ${totalLogs} mornings or evenings when you chose to check in with yourself — to notice, to record, to not let the day pass without a moment of self-awareness. That is a practice. And practices, sustained, become wisdom.`;
   } else if (totalLogs >= 8) {
-    p5 = `You have ${totalLogs} days logged with Bloom — a real start. The consistency you're building matters more than you might think. Each entry is a data point and a small act of self-respect. Keep going.`;
+    p5 = `You have ${totalLogs} days logged with Fertility Companion — a real start. The consistency you're building matters more than you might think. Each entry is a data point and a small act of self-respect. Keep going.`;
   } else {
     p5 = `You're still in the early days of logging, and that's exactly where everyone starts. The app will grow with you. The more you share with it, the more it can reflect back to you. You've already begun — that is the hardest part.`;
   }
@@ -307,7 +307,7 @@ export default function CycleLetterPage() {
                   className="letter-logo text-lg font-semibold text-primary"
                   style={{ fontFamily: "var(--app-font-serif)" }}
                 >
-                  Bloom
+                  Fertility Companion
                 </p>
                 <p className="text-xs text-muted-foreground" style={{ fontFamily: "Georgia, serif" }}>
                   Your fertility companion

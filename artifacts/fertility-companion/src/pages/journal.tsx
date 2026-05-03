@@ -133,7 +133,7 @@ export default function JournalPage() {
         onSuccess: () => {
           setText("");
           queryClient.invalidateQueries({ queryKey: getGetJournalEntriesQueryKey() });
-          toast({ title: "Entry saved", description: "Bloom has reflected on your words." });
+          toast({ title: "Entry saved", description: "Fertility Companion has reflected on your words." });
         },
         onError: () => {
           toast({ title: "Error", description: "Could not save your entry.", variant: "destructive" });
@@ -163,7 +163,7 @@ export default function JournalPage() {
           Private Journal
         </h1>
         <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
-          A space just for you — no one else reads this. Write freely. Bloom will reflect back with warmth.
+          A space just for you — no one else reads this. Write freely. Fertility Companion will reflect back with warmth.
         </p>
       </div>
 
@@ -254,7 +254,7 @@ export default function JournalPage() {
                         >
                           <div className="flex items-center gap-1.5 mb-1.5">
                             <Sparkles size={11} className="text-primary" />
-                            <span className="label-caps" style={{ color: "hsl(var(--primary))" }}>Bloom reflects</span>
+                            <span className="label-caps" style={{ color: "hsl(var(--primary))" }}>Fertility Companion reflects</span>
                           </div>
                           <p className="text-xs text-foreground/75 leading-relaxed italic" style={{ fontFamily: "var(--app-font-serif)" }}>
                             {entry.aiResponse}

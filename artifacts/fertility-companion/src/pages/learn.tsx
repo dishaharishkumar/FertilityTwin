@@ -184,7 +184,7 @@ export default function LearnPage() {
       </div>
 
       <p className="text-xs text-muted-foreground text-center pb-2">
-        Bloom is an educational companion. These articles are not medical advice — always talk to your doctor about your specific situation.
+        Fertility Companion is an educational tool. These articles are not medical advice — always talk to your doctor about your specific situation.
       </p>
     </div>
   );

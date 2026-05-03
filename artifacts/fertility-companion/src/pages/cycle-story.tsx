@@ -48,7 +48,7 @@ export default function CycleStoryPage() {
           Your Cycle Story
         </h1>
         <p className="text-sm text-muted-foreground mt-1 leading-relaxed">
-          A warm, personal narrative of your current cycle — written by Bloom from your data.
+          A warm, personal narrative of your current cycle — written by Fertility Companion from your data.
         </p>
       </div>
 
@@ -74,7 +74,7 @@ export default function CycleStoryPage() {
             Ready to read your story?
           </p>
           <p className="text-sm text-muted-foreground mb-8 max-w-xs mx-auto leading-relaxed">
-            Bloom will weave your cycle data into a personal narrative — not charts, but a chapter of your journey.
+            Fertility Companion will weave your cycle data into a personal narrative — not charts, but a chapter of your journey.
           </p>
           <Button
             onClick={handleGenerate}
@@ -99,7 +99,7 @@ export default function CycleStoryPage() {
             <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
               <Sparkles size={20} className="text-primary animate-pulse" />
             </div>
-            <p className="text-sm text-muted-foreground">Bloom is reading your cycle and writing your story…</p>
+            <p className="text-sm text-muted-foreground">Fertility Companion is reading your cycle and writing your story…</p>
             <div className="space-y-2 w-full max-w-sm">
               <Skeleton className="h-3 w-full" />
               <Skeleton className="h-3 w-5/6" />
@@ -153,7 +153,7 @@ export default function CycleStoryPage() {
             <div className="absolute top-4 right-5 text-6xl opacity-[0.06] select-none" aria-hidden>✦</div>
             <div className="flex items-center gap-2 mb-5">
               <Sparkles size={13} className="text-primary/70" />
-              <span className="label-caps" style={{ color: "hsl(345,30%,55%)" }}>Written by Bloom</span>
+              <span className="label-caps" style={{ color: "hsl(345,30%,55%)" }}>Written by Fertility Companion</span>
             </div>
             <div
               className="text-sm text-foreground/80 leading-[1.85] whitespace-pre-wrap"
@@ -163,7 +163,7 @@ export default function CycleStoryPage() {
             </div>
             <div className="mt-6 pt-5 border-t border-primary/10 flex items-center justify-between">
               <p className="text-sm text-primary/70" style={{ fontFamily: "var(--app-font-serif)", fontStyle: "italic" }}>
-                — Bloom, your fertility companion
+                — Fertility Companion
               </p>
               <button
                 onClick={handleGenerate}
