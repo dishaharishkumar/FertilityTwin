@@ -203,6 +203,21 @@ paths:
         "404":
           description: No active cycle
 
+  /cycles/story:
+    get:
+      operationId: getCycleStory
+      tags: [cycles]
+      summary: AI-generated narrative of the current cycle
+      responses:
+        "200":
+          description: Cycle narrative
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CycleStory"
+        "404":
+          description: No active cycle
+
   /insights/generate:
     post:
       operationId: generateInsight
@@ -735,6 +750,26 @@ components:
         - id
         - content
         - createdAt
+
+    CycleStory:
+      type: object
+      properties:
+        story:
+          type: string
+        cycleDay:
+          type: integer
+        phase:
+          type: string
+        startDate:
+          type: string
+        logCount:
+          type: integer
+      required:
+        - story
+        - cycleDay
+        - phase
+        - startDate
+        - logCount
 
     CreateJournalBody:
       type: object

@@ -235,6 +235,14 @@ export interface JournalEntry {
   createdAt: string;
 }
 
+export interface CycleStory {
+  story: string;
+  cycleDay: number;
+  phase: string;
+  startDate: string;
+  logCount: number;
+}
+
 export interface CreateJournalBody {
   content: string;
 }

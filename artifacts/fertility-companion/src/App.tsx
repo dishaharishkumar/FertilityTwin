@@ -11,6 +11,7 @@ import Insights from "@/pages/insights";
 import GenerateInsight from "@/pages/generate-insight";
 import ChatPage from "@/pages/chat";
 import JournalPage from "@/pages/journal";
+import CycleStoryPage from "@/pages/cycle-story";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,6 +33,7 @@ function Router() {
         <Route path="/insights/generate" component={GenerateInsight} />
         <Route path="/chat" component={ChatPage} />
         <Route path="/journal" component={JournalPage} />
+        <Route path="/cycle/story" component={CycleStoryPage} />
         <Route component={NotFound} />
       </Switch>
     </Layout>

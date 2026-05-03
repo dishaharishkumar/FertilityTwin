@@ -357,6 +357,17 @@ export const GetCurrentCycleResponse = zod.object({
 });
 
 /**
+ * @summary AI-generated narrative of the current cycle
+ */
+export const GetCycleStoryResponse = zod.object({
+  story: zod.string(),
+  cycleDay: zod.number(),
+  phase: zod.string(),
+  startDate: zod.string(),
+  logCount: zod.number(),
+});
+
+/**
  * @summary Generate AI insight based on today's log and cycle context
  */
 export const GenerateInsightBody = zod.object({

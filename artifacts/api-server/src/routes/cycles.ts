@@ -2,8 +2,9 @@ import { Router } from "express";
 import { db } from "@workspace/db";
 import { cyclesTable, dailyLogsTable } from "@workspace/db";
 import { CreateCycleBody } from "@workspace/api-zod";
-import { desc, eq } from "drizzle-orm";
-import { differenceInDays, format, addDays, parseISO } from "date-fns";
+import { openai } from "@workspace/integrations-openai-ai-server";
+import { desc, gte } from "drizzle-orm";
+import { differenceInDays, format, addDays, parseISO, subDays } from "date-fns";
 
 const router = Router();
 
@@ -78,6 +79,69 @@ router.get("/cycles/current", async (_req, res) => {
     daysUntilNextPhase: daysUntilNext,
     estimatedOvulationDate,
     isInTww: phase === "tww",
+  });
+});
+
+router.get("/cycles/story", async (req, res) => {
+  const cycles = await db.select().from(cyclesTable).orderBy(desc(cyclesTable.startDate)).limit(1);
+  if (cycles.length === 0) {
+    res.status(404).json({ error: "No active cycle" });
+    return;
+  }
+
+  const cycle = cycles[0];
+  const startDate = parseISO(cycle.startDate);
+  const today = new Date();
+  const cycleDay = differenceInDays(today, startDate) + 1;
+  const cycleLength = cycle.cycleLength ?? 28;
+
+  function getPhase(day: number) {
+    if (day <= 5) return "menstrual";
+    if (day <= 13) return "follicular";
+    if (day <= 16) return "ovulation";
+    return "two-week wait";
+  }
+  const phase = getPhase(cycleDay);
+
+  const cutoff = subDays(today, cycleDay - 1);
+  const logs = await db.select().from(dailyLogsTable)
+    .where(gte(dailyLogsTable.date, format(cutoff, "yyyy-MM-dd")))
+    .orderBy(desc(dailyLogsTable.date));
+
+  const logSummary = logs.length === 0
+    ? "No logs recorded this cycle yet."
+    : logs.slice(0, 7).map(l =>
+        `Day ${differenceInDays(parseISO(l.date), startDate) + 1}: mood ${l.mood ?? "?"}, energy ${l.energyLevel ?? "?"}/10, sleep ${l.sleepHours ?? "?"}h, stress ${l.stressLevel ?? "?"}/10, symptoms: ${(l.symptoms as string[]).join(", ") || "none"}`
+      ).join("\n");
+
+  const prompt = `You are Bloom, a warm fertility companion. Write a short, beautiful, first-person narrative (3–4 paragraphs) for a woman to read about her current cycle. Make it feel like a personal memoir chapter — warm, grounded, and emotionally honest. Avoid clinical language.
+
+Cycle data:
+- Cycle start: ${format(startDate, "MMMM d, yyyy")}
+- Current cycle day: ${cycleDay} of approximately ${cycleLength}
+- Current phase: ${phase}
+- Days logged: ${logs.length}
+- Estimated ovulation: day ${cycle.ovulationDay ?? 14}
+- Recent log summary:
+${logSummary}
+
+Write the narrative in second person ("you") — warm and compassionate, like a wise friend reflecting back what this cycle held. Reference specific data points naturally. End with a sentence of quiet encouragement.`;
+
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4.1",
+    messages: [{ role: "user", content: prompt }],
+    max_tokens: 500,
+    temperature: 0.8,
+  });
+
+  const story = completion.choices[0]?.message?.content ?? "Your story is still being written.";
+
+  res.json({
+    story,
+    cycleDay,
+    phase,
+    startDate: format(startDate, "yyyy-MM-dd"),
+    logCount: logs.length,
   });
 });
 

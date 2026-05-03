@@ -15,6 +15,7 @@ export * from "./createJournalBody";
 export * from "./currentCycle";
 export * from "./currentCyclePhase";
 export * from "./cycle";
+export * from "./cycleStory";
 export * from "./dailyLog";
 export * from "./dailyLogCervicalMucus";
 export * from "./dailyLogMood";

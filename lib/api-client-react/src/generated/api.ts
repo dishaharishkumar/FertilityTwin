@@ -24,6 +24,7 @@ import type {
   CreateJournalBody,
   CurrentCycle,
   Cycle,
+  CycleStory,
   DailyLog,
   DashboardSummary,
   ErrorResponse,
@@ -832,6 +833,81 @@ export function useGetCurrentCycle<
   request?: SecondParameter<typeof customFetch>;
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getGetCurrentCycleQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary AI-generated narrative of the current cycle
+ */
+export const getGetCycleStoryUrl = () => {
+  return `/api/cycles/story`;
+};
+
+export const getCycleStory = async (
+  options?: RequestInit,
+): Promise<CycleStory> => {
+  return customFetch<CycleStory>(getGetCycleStoryUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetCycleStoryQueryKey = () => {
+  return [`/api/cycles/story`] as const;
+};
+
+export const getGetCycleStoryQueryOptions = <
+  TData = Awaited<ReturnType<typeof getCycleStory>>,
+  TError = ErrorType<void>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getCycleStory>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetCycleStoryQueryKey();
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getCycleStory>>> = ({
+    signal,
+  }) => getCycleStory({ signal, ...requestOptions });
+
+  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+    Awaited<ReturnType<typeof getCycleStory>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetCycleStoryQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getCycleStory>>
+>;
+export type GetCycleStoryQueryError = ErrorType<void>;
+
+/**
+ * @summary AI-generated narrative of the current cycle
+ */
+
+export function useGetCycleStory<
+  TData = Awaited<ReturnType<typeof getCycleStory>>,
+  TError = ErrorType<void>,
+>(options?: {
+  query?: UseQueryOptions<
+    Awaited<ReturnType<typeof getCycleStory>>,
+    TError,
+    TData
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetCycleStoryQueryOptions(options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
