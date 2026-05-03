@@ -11,6 +11,7 @@ import reportCardRouter from "./reportCard";
 import cycleTwinRouter from "./cycleTwin";
 import timeCapsuleRouter from "./timeCapsule";
 import cycleMarkersRouter from "./cycleMarkers";
+import periodPredictorRouter from "./periodPredictor";
 
 const router: IRouter = Router();
 
@@ -26,5 +27,6 @@ router.use(reportCardRouter);
 router.use(cycleTwinRouter);
 router.use(timeCapsuleRouter);
 router.use(cycleMarkersRouter);
+router.use(periodPredictorRouter);
 
 export default router;
